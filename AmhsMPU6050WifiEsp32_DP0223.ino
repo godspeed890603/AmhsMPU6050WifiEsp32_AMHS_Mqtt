@@ -1,4 +1,4 @@
-//git Add test!
+
 #include ".\AmhsMPU6050WifiEsp32_DP0223.h"
 
 iotWifi* fabIotWifi;
