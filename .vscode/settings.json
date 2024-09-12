@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "typeinfo": "cpp",
+        "string": "cpp",
+        "compare": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp"
+    }
+}

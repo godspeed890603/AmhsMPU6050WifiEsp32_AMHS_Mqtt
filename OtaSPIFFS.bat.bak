@@ -1,0 +1,2 @@
+﻿"C:\Users\syscim\AppData\Local\Arduino15\packages\esp32\hardware\esp32\1.0.6/tools/espota.exe" -i "172.20.10.9" -p "3232" "--auth=syscim@888" -f "C:\Users\syscim\AppData\Local\Temp\arduino_build_944941/AmhsMPU6050WifiEsp32.spiffs.bin"
+

@@ -1,0 +1,1 @@
+"C:\Users\syscim\AppData\Local\Arduino15\packages\esp32\hardware\esp32\1.0.6/tools/espota.exe" -i "172.27.63.157" -p "3232" "--auth=syscim@888" -f "C:\temp\vscode-Aduino/AmhsMPU6050WifiEsp32_DP0223.ino.bin"
