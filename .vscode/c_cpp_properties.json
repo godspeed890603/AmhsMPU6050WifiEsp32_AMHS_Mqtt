@@ -11,7 +11,7 @@
             ],
             "intelliSenseMode": "gcc-x64",
             "includePath": [
-                "D:\\temp\\easonIot\\震動\\AmhsMPU6050WifiEsp32_DP0223",
+                "D:\\專案\\Iot\\震動\\AmhsMPU6050WifiEsp32_DP0223",
                 "C:\\Users\\syscim\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.1-bd2b9390ef\\esp32s3\\qio_qspi\\include",
                 "C:\\Users\\syscim\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.0.2\\cores\\esp32",
                 "C:\\Users\\syscim\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.0.2\\variants\\esp32s3",
