@@ -1,407 +1,0 @@
-=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.06.26 10:09:09 =~=~=~=~=~=~=~=~=~=~=~=
-Hqiij^`......
-CIM_WIFI
-hsd@5052880
-CORRUPT HEAP: multi_heap.c:432 detected at 0x756f6300
-abort() was called at PC 0x4008d337 on core 1
-
-ELF file SHA256: 0000000000000000
-
-Backtrace: 0x40088fb8:0x3ffb1ca0 0x40089235:0x3ffb1cc0 0x4008d337:0x3ffb1ce0 0x4008d8fc:0x3ffb1d00 0x40082331:0x3ffb1d20 0x40082362:0x3ffb1d40 0x4008706d:0x3ffb1d60 0x4000beaf:0x3ffb1d80 0x4008a778:0x3ffb1da0 0x400d55bc:0x3ffb1dc0 0x400d5adc:0x3ffb1df0 0x400d398a:0x3ffb1ef0 0x400d1abe:0x3ffb1f60 0x4011ffda:0x3ffb1fb0 0x4008a246:0x3ffb1fd0
-
-Rebooting...
-0?!!!LNy!
-}d......
-CIM_WIFI
-hsd@5052880
-[ip.getway] begin...172.27.17.234
-set pwd.....
-connection....
-............(`~1((!......
-CIM_WIFI
-hsd@5052880
-[ip.getway] begin...172.27.17.234
-set pwd.....
-connection....
-............!91M1!)......
-CIM_WIFI
-hsd@5052880
-[ip.getway] begin...172.27.17.234
-set pwd.....
-connection....
-........
-strat OTA....
-[WiFi.getway] begin...172.27.17.234
-[WiFi.getway] begin...172.27.31.254
-[WiFi.subnet] begin...255.255.224.0
-MPU6050  found i2c_addr 0x"68"
-  FILE: /68.dbSIZE: 1024
-root.openNextFile();
-  FILE: /68.db-journalSIZE: 1032
-root.openNextFile();
-  FILE: /69.dbSIZE: 1024
-root.openNextFile();
-  FILE: /69.db-journalSIZE: 1032
-root.openNextFile();
-Opened database successfully
-0
-CREATE TABLE..
-CREATE TABLE IF NOT EXISTS ACCELOFFSET (accelOffsetX CHAR(25), accelOffsetY CHAR(25), accelOffsetZ CHAR(25));
-Operation done successfully
-Time taken:40625
-0
-Total rows: 1
-count=1
-....
-....
-Column1: 6.6436
-Column2: -7.3239
-Column3: 3.7936
-accelOffsetX: 6.64
-accelOffsetY: -7.32
-accelOffsetZ: 3.79
-accelOffsetX: 6.64
-accelOffsetY: -7.32
-accelOffsetZ: 3.79
-MPU6050  found i2c_addr 0x"69"
-  FILE: /68.dbSIZE: 1024
-root.openNextFile();
-  FILE: /68.db-journalSIZE: 1032
-root.openNextFile();
-  FILE: /69.dbSIZE: 1024
-root.openNextFile();
-  FILE: /69.db-journalSIZE: 1032
-root.openNextFile();
-Opened database successfully
-0
-CREATE TABLE..
-CREATE TABLE IF NOT EXISTS ACCELOFFSET (accelOffsetX CHAR(25), accelOffsetY CHAR(25), accelOffsetZ CHAR(25));
-Operation done successfully
-Time taken:39998
-0
-Total rows: 1
-count=1
-....
-....
-Column1: -1.8513
-Column2: 9.2729
-Column3: 1.5505
-accelOffsetX: -1.85
-accelOffsetY: 9.27
-accelOffsetZ: 1.55
-accelOffsetX: -1.85
-accelOffsetY: 9.27
-accelOffsetZ: 1.55
-Core 1 xSemaphoreTake...
-Core 1 xSemaphoreGive...
-[HTTP] GET start...
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET start...
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>
- http.end();
-
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET start...
-Start updating filesystem
-Progress: 0%[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>
- http.end();
-
-Progress: 0%Progress: 1%Progress: 1%Progress: 2%Progress: 2%Progress: 3%Progress: 3%Progress: 4%Progress: 4%Progress: 5%Progress: 5%Progress: 6%Progress: 6%Progress: 7%Progress: 7%Progress: 8%Progress: 8%Progress: 9%Core 1 xSemaphoreTake...
-Core 1 xSemaphoreGive...
-Progress: 9%Progress: 10%[HTTP] GET start...
-Progress: 10%[HTTP] GET start...
-Progress: 11%Progress: 11%Progress: 12%[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>
-Progress: 13% http.end();
-Progress: 13%
-Progress: 14%Progress: 14%Progress: 15%Progress: 15%Progress: 16%Progress: 16%Progress: 17%Progress: 17%Progress: 18%Progress: 18%Progress: 19%[HTTP] GET start...
-Progress: 19%Progress: 20%Progress: 20%Progress: 21%Progress: 21%Progress: 22%[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>Progress: 22%
- http.end();
-Progress: 23%
-Progress: 23%Progress: 24%Progress: 25%Progress: 25%Progress: 26%Progress: 26%Progress: 27%Progress: 27%Progress: 28%Progress: 28%Progress: 29%Progress: 29%Progress: 30%Progress: 30%Progress: 31%Progress: 31%Progress: 32%Progress: 32%Progress: 33%Progress: 33%Progress: 34%Progress: 34%Progress: 35%Progress: 35%Progress: 36%Progress: 36%Progress: 37%Progress: 38%Progress: 38%Progress: 39%Progress: 39%Progress: 40%Progress: 40%Progress: 41%Progress: 41%Progress: 42%Progress: 42%Progress: 43%Progress: 43%Progress: 44%Progress: 44%Progress: 45%Progress: 45%Progress: 46%Progress: 46%Progress: 47%Progress: 47%Progress: 48%Progress: 48%Progress: 49%Progress: 50%Progress: 50%Progress: 51%Progress: 51%Progress: 52%Progress: 52%Progress: 53%Progress: 53%Progress: 54%Progress: 54%Progress: 55%Progress: 55%Progress: 56%Progress: 56%Progress: 57%Progress: 57%Progress: 58%Progress: 58%Progress: 59%Progress: 59%Progress: 60%Progress: 60%Progress: 61%Progress: 61%Progress: 62%Progress: 63%Progress: 63%Progress: 64%Progress: 64%Progress: 65%Progress: 65%Progress: 66%Progress: 66%Progress: 67%Progress: 67%Progress: 68%Progress: 68%Progress: 69%Progress: 69%Progress: 70%Progress: 70%Progress: 71%Progress: 71%Progress: 72%Progress: 72%Progress: 73%Progress: 73%Progress: 74%Progress: 75%Progress: 75%Progress: 76%Progress: 76%Progress: 77%Progress: 77%Progress: 78%Progress: 78%Progress: 79%Progress: 79%Progress: 80%Progress: 80%Progress: 81%Progress: 81%Progress: 82%Progress: 82%Progress: 83%Progress: 83%Progress: 84%Progress: 84%Progress: 85%Progress: 85%Progress: 86%Progress: 86%Progress: 87%Core 1 xSemaphoreTake...
-Core 1 xSemaphoreGive...
-Progress: 88%Progress: 88%Progress: 89%Progress: 89%Progress: 90%Progress: 90%Progress: 91%Progress: 91%Progress: 92%Progress: 92%Progress: 93%Progress: 93%Progress: 94%Progress: 94%Progress: 95%Progress: 95%[HTTP] GET start...
-Progress: 96%[HTTP] GET start...
-Progress: 96%Progress: 97%Progress: 97%Progress: 98%[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-Progress: 98%[HTTP] GET end...
-[HTTP] GET... code: 200
-Progress: 99%http.getString()
-PPT<br><br>
-Progress: 100% http.end();
-
-End
-
-09S?D(J!1V19!)......
-CIM_WIFI
-hsd@5052880
-[ip.getway] begin...172.27.17.234
-set pwd.....
-connection....
-........
-strat OTA....
-[WiFi.getway] begin...172.27.17.234
-[WiFi.getway] begin...172.27.31.254
-[WiFi.subnet] begin...255.255.224.0
-MPU6050  found i2c_addr 0x"68"
-Opened database successfully
-0
-CREATE TABLE..
-CREATE TABLE IF NOT EXISTS ACCELOFFSET (accelOffsetX CHAR(25), accelOffsetY CHAR(25), accelOffsetZ CHAR(25));
-Operation done successfully
-Time taken:55877
-0
-Total rows: 0
-count=0
-....
-....
-....
-*value16.6339
-*value2-7.3205
-*value33.8024
-
-Column1: 6.6339
-Column2: -7.3205
-Column3: 3.8024
-accelOffsetX: 6.63
-accelOffsetY: -7.32
-accelOffsetZ: 3.80
-accelOffsetX: 6.63
-accelOffsetY: -7.32
-accelOffsetZ: 3.80
-MPU6050  found i2c_addr 0x"69"
-  FILE: /68.dbSIZE: 1024
-root.openNextFile();
-  FILE: /68.db-journalSIZE: 1032
-root.openNextFile();
-Opened database successfully
-0
-CREATE TABLE..
-CREATE TABLE IF NOT EXISTS ACCELOFFSET (accelOffsetX CHAR(25), accelOffsetY CHAR(25), accelOffsetZ CHAR(25));
-Operation done successfully
-Time taken:77740
-0
-Total rows: 0
-count=0
-....
-....
-....
-*value1-1.8481
-*value29.2710
-*value31.5241
-
-Column1: -1.8481
-Column2: 9.2710
-Column3: 1.5241
-accelOffsetX: -1.85
-accelOffsetY: 9.27
-accelOffsetZ: 1.52
-accelOffsetX: -1.85
-accelOffsetY: 9.27
-accelOffsetZ: 1.52
-Core 1 xSemaphoreTake...
-Core 1 xSemaphoreGive...
-[HTTP] GET start...
-[HTTP] GET start...
-abort() was called at PC 0x4019a45f on core 1
-
-ELF file SHA256: 0000000000000000
-
-Backtrace: 0x40088fb8:0x3ffb1e50 0x40089235:0x3ffb1e70 0x4019a45f:0x3ffb1e90 0x4019a4a6:0x3ffb1eb0 0x40199ab3:0x3ffb1ed0 0x40199eb6:0x3ffb1ef0 0x40199c1d:0x3ffb1f10 0x400d646b:0x3ffb1f30 0x400d75d2:0x3ffb1f70 0x400d1b1e:0x3ffb1f90 0x4011ffe9:0x3ffb1fb0 0x4008a246:0x3ffb1fd0
-
-Rebooting...
-0~!!*J~!97!......
-CIM_WIFI
-hsd@5052880
-[ip.getway] begin...172.27.17.234
-set pwd.....
-connection....
-........
-strat OTA....
-[WiFi.getway] begin...172.27.17.234
-[WiFi.getway] begin...172.27.31.254
-[WiFi.subnet] begin...255.255.224.0
-MPU6050  found i2c_addr 0x"68"
-  FILE: /68.dbSIZE: 1024
-root.openNextFile();
-  FILE: /68.db-journalSIZE: 1032
-root.openNextFile();
-  FILE: /69.dbSIZE: 1024
-root.openNextFile();
-  FILE: /69.db-journalSIZE: 1032
-root.openNextFile();
-Opened database successfully
-0
-CREATE TABLE..
-CREATE TABLE IF NOT EXISTS ACCELOFFSET (accelOffsetX CHAR(25), accelOffsetY CHAR(25), accelOffsetZ CHAR(25));
-Operation done successfully
-Time taken:40626
-0
-Total rows: 1
-count=1
-....
-....
-Column1: 6.6339
-Column2: -7.3205
-Column3: 3.8024
-accelOffsetX: 6.63
-accelOffsetY: -7.32
-accelOffsetZ: 3.80
-accelOffsetX: 6.63
-accelOffsetY: -7.32
-accelOffsetZ: 3.80
-MPU6050  found i2c_addr 0x"69"
-  FILE: /68.dbSIZE: 1024
-root.openNextFile();
-  FILE: /68.db-journalSIZE: 1032
-root.openNextFile();
-  FILE: /69.dbSIZE: 1024
-root.openNextFile();
-  FILE: /69.db-journalSIZE: 1032
-root.openNextFile();
-Opened database successfully
-0
-CREATE TABLE..
-CREATE TABLE IF NOT EXISTS ACCELOFFSET (accelOffsetX CHAR(25), accelOffsetY CHAR(25), accelOffsetZ CHAR(25));
-Operation done successfully
-Time taken:40624
-0
-Total rows: 1
-count=1
-....
-....
-Column1: -1.8481
-Column2: 9.2710
-Column3: 1.5241
-accelOffsetX: -1.85
-accelOffsetY: 9.27
-accelOffsetZ: 1.52
-accelOffsetX: -1.85
-accelOffsetY: 9.27
-accelOffsetZ: 1.52
-Core 1 xSemaphoreTake...
-Core 1 xSemaphoreGive...
-[HTTP] GET start...
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>
- http.end();
-
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>
- http.end();
-
-Core 1 xSemaphoreTake...
-Core 1 xSemaphoreGive...
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>
- http.end();
-
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... failed, error: read Timeout
- http.end();
-httpcode=-11
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>
- http.end();
-
-Core 1 xSemaphoreTake...
-Core 1 xSemaphoreGive...
-[HTTP] GET start...
-[HTTP] GET start...
-[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>
- http.end();
-
-[HTTP] GET end...
-[HTTP] GET... code: 200
-http.getString()
-PPT<br><br>
- http.end();
-
-abort() was called at PC 0x4019a45f on core 1
-
-ELF file SHA256: 0000000000000000
-
-Backtrace: 0x40088fb8:0x3ffb1e50 0x40089235:0x3ffb1e70 0x4019a45f:0x3ffb1e90 0x4019a4a6:0x3ffb1eb0 0x40199ab3:0x3ffb1ed0 0x40199eb6:0x3ffb1ef0 0x40199c1d:0x3ffb1f10 0x400d646b:0x3ffb1f30 0x400d75d2:0x3ffb1f70 0x400d1b1e:0x3ffb1f90 0x4011ffe9:0x3ffb1fb0 0x4008a246:0x3ffb1fd0
-
-Rebooting...
-090!!N)~ 9......
-CIM_WIFI
-hsd@5052880
-[ip.getway] begin...172.27.17.234
-set pwd.....
-connection....
-..
