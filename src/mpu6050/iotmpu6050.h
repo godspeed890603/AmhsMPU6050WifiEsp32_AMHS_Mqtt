@@ -2,6 +2,7 @@
 #define IOTMPU6050_H
 
 #include <Adafruit_MPU6050.h>
+#include <ArduinoJson.h>
 #include <Arduino.h>
 // #include <ArduinoOTA.h>  //V1.11
 
@@ -73,6 +74,7 @@ class iotMPU6050 {  // The class
   void getMPU6050OffsetData();
   void resetMPU6050Data();
   bool getMPU6050Noise(float x, float y, float z);
+  String getMPU6050Json();//2024/09/24 FOR MQTT
 
   // 設置校準偏移量為0
   float accelOffsetX = 0.0;

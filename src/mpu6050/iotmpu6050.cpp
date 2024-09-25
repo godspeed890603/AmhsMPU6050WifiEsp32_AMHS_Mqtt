@@ -1,5 +1,7 @@
 #include "iotmpu6050.h"
 
+
+
 iotMPU6050::iotMPU6050(uint8_t i2c_addr) {
   int n;
   char buffer[50];
@@ -168,7 +170,7 @@ bool iotMPU6050::getMPU6050Noise(float x, float y, float z) {
   // 忽略或过滤异常数据
   if (abs(x_acc) > MAX_ACCELERATION || abs(y_acc) > MAX_ACCELERATION ||
       abs(z_acc) > MAX_ACCELERATION) {
-    Serial.println("First Over");
+    //Serial.println("First Over");
     return false;
   }
 
@@ -334,4 +336,52 @@ void iotMPU6050::resetMPU6050Data() {
   // temperature = 0.0;
   initial_ang_flg = true;
   initial_acc_flg = true;
+}
+//--------------------------------------------------------------------------------------
+
+
+String iotMPU6050::getMPU6050Json() {
+  // 創建一個足夠大的 StaticJsonDocument
+  StaticJsonDocument<1024> doc;
+
+  // 將十進制的 I2C 地址轉換為十六進制字符串
+  char hex_str[10];  
+  sprintf(hex_str, "%X", mpu_i2c_addr);  // 將 I2C 地址轉換為十六進制
+
+  // 構建 SENSOR_ID
+  String SENSOR_ID = WiFi.macAddress();;
+
+    // Add the mac_address and correlation_id
+  doc["mac_address"] = WiFi.macAddress();
+  doc["correlation_id"] = "correlation_id";
+  // 創建嵌套在 "data" 下的 JSON 對象
+  JsonObject data = doc.createNestedObject("data");
+  // 添加鍵值對到 "data" 中
+  data["SENSOR_ID"] = WiFi.macAddress();
+  data["machine_ID"] = "AGV";
+  data["ip"] = ipAddr;
+  data["rssi"] = rssi;
+  data["x_acc"] = x_acc;
+  data["y_acc"] = y_acc;
+  data["z_acc"] = z_acc;
+  data["max_x_acc"] = max_x_acc;
+  data["max_y_acc"] = max_y_acc;
+  data["max_z_acc"] = max_z_acc;
+  data["min_x_acc"] = min_x_acc;
+  data["min_y_acc"] = min_y_acc;
+  data["min_z_acc"] = min_z_acc;
+  data["x_z_ang"] = x_z_ang;
+  data["y_z_ang"] = y_z_ang;
+  data["max_x_z_ang"] = max_x_z_ang;
+  data["max_y_z_ang"] = max_y_z_ang;
+  data["min_x_z_ang"] = min_x_z_ang;
+  data["min_y_z_ang"] = min_y_z_ang;
+  data["temperature"] = temperature;
+
+
+  // 使用 String 將 JSON 序列化
+  String jsonOutput;
+  serializeJson(doc, jsonOutput);
+
+  return jsonOutput;  // 返回 JSON 字符串
 }

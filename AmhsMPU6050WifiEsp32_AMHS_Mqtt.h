@@ -7,6 +7,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <Wire.h>
+#include <PubSubClient.h>
 #include <esp_heap_caps.h>
 
 // #include <task.h>
@@ -16,6 +17,8 @@
 #include "./src/sqllite3db/sqllitedb.h"
 #include "./src/webAction/iotWebAction.h"
 #include "./src/wifi/iotwifi.h"
+#include "./src/mqtt/MQTTClient.h"
+
 
 // OTA
 
@@ -30,5 +33,9 @@ void wifiTask_0x69(void *parameter);
 QueueHandle_t dataQueue_0x68;
 //QueueHandle_t dataQueue_0x69;
 SemaphoreHandle_t mutex;
+//mqtt
+// WiFiClient espClient;
+// PubSubClient mqttClient(espClient);
+// 全局 MQTTClient 物件
 
 #endif
