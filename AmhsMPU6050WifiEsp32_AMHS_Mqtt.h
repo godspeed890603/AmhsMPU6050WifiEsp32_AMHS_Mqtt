@@ -10,12 +10,10 @@
 #include <PubSubClient.h>
 #include <esp_heap_caps.h>
 
-// #include <task.h>
-// #include <semphr.h>
+
 #include "./src/common/common.h"
 #include "./src/mpu6050/iotmpu6050.h"
 #include "./src/sqllite3db/sqllitedb.h"
-#include "./src/webAction/iotWebAction.h"
 #include "./src/wifi/iotwifi.h"
 #include "./src/mqtt/MQTTClient.h"
 
@@ -26,7 +24,7 @@
 // 定義兩個核心的Task函式
 void mpu6050_task(void *parameter);
 void wifiTask_0x68(void *parameter);
-void wifiTask_0x69(void *parameter);
+// void wifiTask_0x69(void *parameter);
 
 // 定義佇列的變數
 #define QUEUE_SIZE 6000

@@ -70,7 +70,7 @@ class iotMPU6050 {  // The class
   void getMPU6050AccMaxMin(float x, float y, float z);
   void getMPU6050AngleMaxMin(float x_z, float y_z);
   void getMPU6050Temperature();
-  String getMPU6050WebHtml();
+  // String getMPU6050WebHtml();
   void getMPU6050OffsetData();
   void resetMPU6050Data();
   bool getMPU6050Noise(float x, float y, float z);

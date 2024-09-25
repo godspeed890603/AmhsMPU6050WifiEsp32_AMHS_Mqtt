@@ -279,40 +279,40 @@ void iotMPU6050::getMPU6050AngleMaxMin(float x_z, float y_z) {
 }
 void iotMPU6050::getMPU6050Temperature() {}
 
-String iotMPU6050::getMPU6050WebHtml() {
-  String webHtml;
-  char buffer[1000];
-  int n;
-  // sprintf(buffer, "[getMPU6050WebHtml]i2c_addr 0x%x working..",
-  // mpu_i2c_addr); Serial.println(buffer);
-  // sprintf(buffer, "0x%x", mpu_i2c_addr);
-  char hex_str[10];  // 存储十六进制字符串的数组
-  // Serial.println("web string start....1 ");
-  sprintf(hex_str, "%X", mpu_i2c_addr);  // 将十进制数转换为十六进制字符串
-  int hex_value;
-  // Serial.println("web string start....2 ");
-  sscanf(hex_str, "%X", &hex_value);  // 将十六进制字符串转换为整数
-  // Serial.println("web string start.... ");
+// String iotMPU6050::getMPU6050WebHtml() {
+//   String webHtml;
+//   char buffer[1000];
+//   int n;
+//   // sprintf(buffer, "[getMPU6050WebHtml]i2c_addr 0x%x working..",
+//   // mpu_i2c_addr); Serial.println(buffer);
+//   // sprintf(buffer, "0x%x", mpu_i2c_addr);
+//   char hex_str[10];  // 存储十六进制字符串的数组
+//   // Serial.println("web string start....1 ");
+//   sprintf(hex_str, "%X", mpu_i2c_addr);  // 将十进制数转换为十六进制字符串
+//   int hex_value;
+//   // Serial.println("web string start....2 ");
+//   sscanf(hex_str, "%X", &hex_value);  // 将十六进制字符串转换为整数
+//   // Serial.println("web string start.... ");
 
-  // 172.27.17.232
-  String SENSOR_ID = ipAddr + "_0x" + (String)hex_str;
-  webHtml =
-      webserverHtml_Header + "SENSOR_ID=" + macAddress +
-      "&machine_ID=" + "AGV" + "&ip=" + ipAddr +  // +
-      "&rssi=" + (String)rssi + "&x_acc=" + (String)x_acc +
-      "&y_acc=" + (String)y_acc + "&z_acc=" + (String)z_acc +
-      "&max_x_acc=" + (String)max_x_acc + "&max_y_acc=" + (String)max_y_acc +
-      "&max_z_acc=" + (String)max_z_acc + "&min_x_acc=" + (String)min_x_acc +
-      "&min_y_acc=" + (String)min_y_acc + "&min_z_acc=" + (String)min_z_acc +
-      "&x_z_ang=" + (String)x_z_ang + "&y_z_ang=" + (String)y_z_ang +
-      "&max_x_z_ang=" + (String)max_x_z_ang +
-      "&max_y_z_ang=" + (String)max_y_z_ang +
-      "&min_x_z_ang=" + (String)min_x_z_ang +
-      "&min_y_z_ang=" + (String)min_y_z_ang +
-      "&temperature=" + (String)temperature;
+//   // 172.27.17.232
+//   String SENSOR_ID = ipAddr + "_0x" + (String)hex_str;
+//   webHtml =
+//       webserverHtml_Header + "SENSOR_ID=" + macAddress +
+//       "&machine_ID=" + "AGV" + "&ip=" + ipAddr +  // +
+//       "&rssi=" + (String)rssi + "&x_acc=" + (String)x_acc +
+//       "&y_acc=" + (String)y_acc + "&z_acc=" + (String)z_acc +
+//       "&max_x_acc=" + (String)max_x_acc + "&max_y_acc=" + (String)max_y_acc +
+//       "&max_z_acc=" + (String)max_z_acc + "&min_x_acc=" + (String)min_x_acc +
+//       "&min_y_acc=" + (String)min_y_acc + "&min_z_acc=" + (String)min_z_acc +
+//       "&x_z_ang=" + (String)x_z_ang + "&y_z_ang=" + (String)y_z_ang +
+//       "&max_x_z_ang=" + (String)max_x_z_ang +
+//       "&max_y_z_ang=" + (String)max_y_z_ang +
+//       "&min_x_z_ang=" + (String)min_x_z_ang +
+//       "&min_y_z_ang=" + (String)min_y_z_ang +
+//       "&temperature=" + (String)temperature;
 
-  return webHtml;
-}
+//   return webHtml;
+// }
 
 void iotMPU6050::resetMPU6050Data() {
   // acc

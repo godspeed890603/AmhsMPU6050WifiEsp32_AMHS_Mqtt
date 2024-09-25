@@ -43,7 +43,8 @@ private:
   // PubSubClient mqttClient(espClient);
 
   // MQTT 設定
-  const char* mqtt_server = "172.20.10.4";  // 替換為您的 MQTT broker 地址
+  // const char* mqtt_server = "172.20.10.4";  // 替換為您的 MQTT broker 地址
+  const char* mqtt_server = "172.27.17.4";  // 替換為您的 MQTT broker 地址
   const int mqtt_port = 1883;                   // 替換為您的 MQTT broker 端口
   const char* mqtt_user = "eason";          // 替換為您的 MQTT 使用者名稱
   const char* mqtt_pass = "qazwsx";      // 替換為您的 MQTT 密碼

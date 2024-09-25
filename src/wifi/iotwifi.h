@@ -22,28 +22,10 @@ class iotWifi {  // The class
   IPAddress _gateway;
   IPAddress _subnet;
 
-  // const char* ssid = "CIM_WIFI";
-  // const char* pwd = "hsd@5052880";
-  // const char* ssid = "CIM";
-  // const char* pwd = "hsd5052880";
-  // const char* ssid = "Eason";
-  // const char* pwd = "28782878ab";
+
   int reconnectInterval = 1000;
   bool isDhcp = true;
 
-  // IPAddress ip;
-  // IPAddress gateway;
-  // IPAddress subnet;
-  // IPAddress dns;
-
-  // IPAddress ip = {172, 27, 17,200};  // 设置为你想要的静态IP地址
-  // IPAddress ip = {172, 27, 17,6};  // 设置为你想要的静态IP地址
-  // IPAddress ip = {172, 27, 17, 233};  // 设置为你想要的静态IP地址
-  // IPAddress subnet = {255, 255, 224, 0};   // 设置子网掩码
-  // IPAddress gateway = {172, 27, 31, 254};  // 设置网关IP地址
-  // IPAddress dns1 = {172, 27, 10, 81};   // 设置子网掩码
-  // IPAddress dns2 = {172, 27, 10, 82};   // 设置子网掩码
-  // the IP address for the shield:
 
   String* otaHostname;
   void checkWifiStat();
@@ -61,4 +43,4 @@ class iotWifi {  // The class
 };
 
 #endif /* IOTWIFI_H */
-// #endif /* GETTIME_H */
+

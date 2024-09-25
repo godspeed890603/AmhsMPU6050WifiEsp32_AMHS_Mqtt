@@ -193,65 +193,14 @@ void mpu6050DataReset(iotMPU6050* mpu) {
   mpu->resetMPU6050Data();
 }
 
-void getQueuebyMpuAndUploadWeb(QueueHandle_t queue) {
-  // char* receivedData;
-  char* receivedData;
-  BaseType_t pd = pdFALSE;
-  try {
-    /* code */
-    xSemaphoreTake(mutex, portMAX_DELAY);
-    // // xSemaphoreTake(mutex, 500);
-    pd = xQueueReceive(queue, &receivedData, 0);
-    xSemaphoreGive(mutex);
-    // // xSemaphoreGive(mutex);
-    if (pd != pdTRUE) {
-      return;
-    }
-    // Serial.println(receivedData);
-    iotWebAction* u;
-    u = new iotWebAction();
-    String uData = String(receivedData);
-    free(receivedData);  // data 需要被 free 因為是用share
-                         // memory..所以在接收端free
-                         // 一定要做!不然會當機
-    int retry = 0;
-    xSemaphoreTake(mutex, portMAX_DELAY);
-    while (1) {
-      int httpCode = u->uploadData(uData);
-      if (httpCode != 200) {
-        Serial.print("httpcode=");
-        Serial.println(httpCode);
-        if (httpCode == -1) ESP.restart();
-
-        vTaskDelay(pdMS_TO_TICKS(1));
-
-        // 傳送失敗!!再送一次
-        retry++;
-        if (retry > 5) break;
-      } else if (httpCode == 200) {
-        break;
-      }
-    }
-    xSemaphoreGive(mutex);
-    // Serial.println("Delete u");
-    delete (u);
-    Serial.println("");
-    //}
-
-  } catch (const std::exception& e) {
-    Serial.println("[getQueuebyMpuAndUploadWeb]sysytem Error.. ESP.restart();");
-    ESP.restart();
-  }
-}
-
 void sendDataToWifi(QueueHandle_t queue, iotMPU6050* mpu) {
   // // 複製字串並取得指標
 
   try {
     // if (WiFi.status() == WL_CONNECTED) {
     // String webHtml = mpu->getMPU6050WebHtml();
-    String webHtml = mpu->getMPU6050Json();
-    char* data = strdup(webHtml.c_str());  // data 需要被 free 因為是用share
+    String mpu6050Json = mpu->getMPU6050Json();
+    char* data = strdup(mpu6050Json.c_str());  // data 需要被 free 因為是用share
     // memory..所以在接收端free
     xQueueSend(queue, &data, portMAX_DELAY);
 
@@ -299,12 +248,6 @@ void getQueuebyMpuAndUploadMqtt(QueueHandle_t queue) {
 
   mqttClientHandler.loop();  // 處理 MQTT 事件
 
-  // // 構建要發布的資料
-  // String data = "{ \"temperature\": 24.5, \"humidity\": 60.2 }";
-
-  // // 發布資料到 MQTT broker
-  // mqttClientHandler.publishData(data);
-
   delay(500);  // 每 5 秒發布一次資料
 
   try {
@@ -325,39 +268,7 @@ void getQueuebyMpuAndUploadMqtt(QueueHandle_t queue) {
         Serial.println(mqttData);
     free(receivedData);  // Free the received data from the queue
     mqttClientHandler.publishData(mqttData);
-    // // Create an instance of the MQTT action class
-    // iotMqttAction* mqttAction = new iotMqttAction();
-    // int retry = 0;
-    // bool sent = false;
-
-    // xSemaphoreTake(mutex, portMAX_DELAY);  // Lock the mutex for publishing data
-
-    // // Retry sending the data via MQTT if necessary
-    // while (retry < 5) {
-    //   // bool result = mqttAction->publishData(mqttData);  // Publish data via
-    //   // MQTT
-    //   // 發布資料到 MQTT broker
-    //   mqttClientHandler.publishData(data);
-
-    //   if (result) {  // If publishing succeeds
-    //     sent = true;
-    //     break;
-    //   } else {
-    //     Serial.println("MQTT publish failed, retrying...");
-    //     retry++;
-    //     vTaskDelay(pdMS_TO_TICKS(100));  // Delay before retrying
-    //   }
-    // }
-
-    // if (!sent) {
-    //   Serial.println("MQTT publish failed after retries. Restarting...");
-    //   ESP.restart();  // Restart if unable to send after retries
-    // }
-
-    //xSemaphoreGive(mutex);  // Release the mutex
-
-    // // Cleanup
-    // delete mqttAction;
+   
     Serial.println("MQTT data sent successfully.");
 
   } catch (const std::exception& e) {

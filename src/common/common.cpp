@@ -1,10 +1,10 @@
 #include "common.h"
 // Wifi & Upload String
-const char* ssid = "Ktweety";
-const char* pwd = "28782878ab";
-IPAddress ip(172, 20, 10, 7);       // 设置为你想要的静态IP地址
-IPAddress subnet(255, 255, 255, 240);   // 设置子网掩码
-IPAddress gateway(172, 20, 10,1);  // 设置网关IP地址
+// const char* ssid = "Ktweety";
+// const char* pwd = "28782878ab";
+// IPAddress ip(172, 20, 10, 7);       // 设置为你想要的静态IP地址
+// IPAddress subnet(255, 255, 255, 240);   // 设置子网掩码
+// IPAddress gateway(172, 20, 10,1);  // 设置网关IP地址
 
 
 // const char* ssid = "AMHS_WIFI";
@@ -23,13 +23,13 @@ IPAddress gateway(172, 20, 10,1);  // 设置网关IP地址
 
 
 // //OFFICE use
-// const char* ssid = "CIM_WIFI";
-// const char* pwd = "hsd@5052880";
-// // char* ssid = "CIM_WIFI";
-// // char* pwd = "hsd@5052880";
-// IPAddress ip(172, 27, 17, 234);       // 设置为你想要的静态IP地址
-// IPAddress subnet(255, 255, 224, 0);   // 设置子网掩码
-// IPAddress gateway(172, 27, 31, 254);  // 设置网关IP地址
+const char* ssid = "CIM_WIFI";
+const char* pwd = "hsd@5052880";
+// char* ssid = "CIM_WIFI";
+// char* pwd = "hsd@5052880";
+IPAddress ip(172, 27, 17, 234);       // 设置为你想要的静态IP地址
+IPAddress subnet(255, 255, 224, 0);   // 设置子网掩码
+IPAddress gateway(172, 27, 31, 254);  // 设置网关IP地址
 
 
 String webserverHtml_Header =
