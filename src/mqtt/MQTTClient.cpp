@@ -20,7 +20,7 @@ void MQTTClient::connect() {
   // client(espClient);
   while (!client->connected()) {
     log_message("Connecting to MQTT broker...");
-    if (client->connect("ESP32Client", mqtt_user, mqtt_pass)) {
+    if (client->connect(WiFi.macAddress().c_str(), mqtt_user, mqtt_pass)) {
       log_message("Connected to MQTT broker");
       client->subscribe(mqtt_topic);
     } else {
@@ -58,7 +58,7 @@ void MQTTClient::loop() {
 
 // 發佈資料到指定的 MQTT topic
 void MQTTClient::publishData(String  data) {
-  String mqtt_topic1="request/iot/"+ WiFi.macAddress() + "/service1";
+  String mqtt_topic1="request/iot/"+ WiFi.macAddress() + "/service_vibration";
   if (client->publish(mqtt_topic1.c_str(), data.c_str())) {
     log_message("Data published successfully: " + data);
   } else {
