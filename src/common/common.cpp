@@ -22,7 +22,7 @@
 
 
 
-// //OFFICE use
+// // //OFFICE use
 const char* ssid = "CIM_WIFI";
 const char* pwd = "hsd@5052880";
 // char* ssid = "CIM_WIFI";
