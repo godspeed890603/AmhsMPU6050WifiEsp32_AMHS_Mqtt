@@ -10,7 +10,7 @@
 
 const int ledPin = 2;  // 將LED連接到GPIO 2
 const int sencond_1=1000000;
-const int mpu_loop_scan_time=1;
+const int mpu_loop_scan_time=5;
 void ledDisplay(bool* led_on);
 void ledAlarm(int loopCount, int delayTime);
 

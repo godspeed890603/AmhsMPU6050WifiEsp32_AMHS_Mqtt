@@ -54,6 +54,8 @@ private:
   PubSubClient* client;      // 定義 PubSubClient 並傳遞 espClien
   // 當前主題
   String currentTopic;
+  int qos_subscribe=1;
+  int qos_publish=2;
 };
 
 #endif // MQTTCLIENT_H

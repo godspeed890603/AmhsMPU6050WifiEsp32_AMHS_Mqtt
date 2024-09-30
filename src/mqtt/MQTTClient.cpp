@@ -22,7 +22,7 @@ void MQTTClient::connect() {
     log_message("Connecting to MQTT broker...");
     if (client->connect(WiFi.macAddress().c_str(), mqtt_user, mqtt_pass)) {
       log_message("Connected to MQTT broker");
-      client->subscribe(mqtt_topic);
+      client->subscribe(mqtt_topic,qos_subscribe);
     } else {
       log_message("Failed to connect to MQTT broker, retrying...");
       Serial.println(mqtt_port);
@@ -30,7 +30,6 @@ void MQTTClient::connect() {
       Serial.println(mqtt_user);
       Serial.println(mqtt_pass);
       delay(5000);
- 
     }
   }
 }
@@ -59,7 +58,7 @@ void MQTTClient::loop() {
 // 發佈資料到指定的 MQTT topic
 void MQTTClient::publishData(String  data) {
   String mqtt_topic1="request/iot/"+ WiFi.macAddress() + "/service_vibration";
-  if (client->publish(mqtt_topic1.c_str(), data.c_str())) {
+  if (client->publish(mqtt_topic1.c_str(), data.c_str(),qos_publish)) {
     log_message("Data published successfully: " + data);
   } else {
     log_message("Failed to publish data " + mqtt_topic1 + " " + WiFi.macAddress()  );
