@@ -8,10 +8,25 @@ MQTTClient::MQTTClient() {
   log_message("Connected to MQTT broker111");
   client->setBufferSize(1024);
   client->setServer(mqtt_server, mqtt_port);
+  // 使用 lambda 表達式來捕捉 this 指針，以便在回調中使用成員函數
+  client->setCallback([this](char* topic, byte* payload, unsigned int length) {
+    this->callback(topic, payload, length);  // 調用非靜態成員函數
+  });
   log_message("Connected to MQTT broker222");
   // client.setCallback([this](char* topic, byte* payload, unsigned int length) {
   //   this->onMessage(topic, payload, length);
   // });
+}
+
+// 處理接收到的MQTT消息
+void MQTTClient::callback(char* topic, byte* payload, unsigned int length) {
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+  }
+  Serial.println();
 }
 
 // 連接到 MQTT 伺服器
@@ -22,7 +37,8 @@ void MQTTClient::connect() {
     log_message("Connecting to MQTT broker...");
     if (client->connect(WiFi.macAddress().c_str(), mqtt_user, mqtt_pass)) {
       log_message("Connected to MQTT broker");
-      client->subscribe(mqtt_topic,qos_subscribe);
+      String mqtt_subscribe_topic="response/iot/"+ WiFi.macAddress() + "/service_vibration";
+      client->subscribe(mqtt_subscribe_topic.c_str(),qos_subscribe);
     } else {
       log_message("Failed to connect to MQTT broker, retrying...");
       Serial.println(mqtt_port);

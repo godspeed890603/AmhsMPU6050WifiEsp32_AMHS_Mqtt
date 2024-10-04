@@ -37,6 +37,9 @@ private:
   // 日誌功能模擬
   void log_message(const String& msg);
 
+  // 處理接收到的MQTT消息
+  void callback(char* topic, byte* payload, unsigned int length);
+
   // // MQTT 客戶端物件
   // PubSubClient mqttClient;
   // WiFiClient espClient;
