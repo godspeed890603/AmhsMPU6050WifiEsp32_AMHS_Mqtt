@@ -5,6 +5,7 @@ iotWifi* fabIotWifi;
 iotMPU6050* mpu_0x68;
 // iotMPU6050* mpu_0x69;
 MQTTClient mqttClientHandler;
+String service = "service_vibration";
 
 unsigned long startTime1 = 0;
 unsigned long startTime2 = 0;
@@ -56,6 +57,8 @@ void setup() {
   fabIotWifi->initialWifi();
   // Serial.println("initial WiFi...2");
   delay(100);
+  mqttClientHandler.setServiceName(service);
+  mqttClientHandler.CreatePubSubTopic();
   mqttClientHandler.connect();  // 連接到 MQTT broker
   delay(100);
   // 建立佇列
@@ -265,10 +268,10 @@ void getQueuebyMpuAndUploadMqtt(QueueHandle_t queue) {
 
     // Convert the received data into a string
     String mqttData = String(receivedData);
-        Serial.println(mqttData);
+    Serial.println(mqttData);
     free(receivedData);  // Free the received data from the queue
     mqttClientHandler.publishData(mqttData);
-   
+
     Serial.println("MQTT data sent successfully.");
 
   } catch (const std::exception& e) {

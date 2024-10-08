@@ -4,7 +4,7 @@
 
 // 构造函数
 MQTTClient::MQTTClient() {
-  client=new PubSubClient(espClient);
+  client = new PubSubClient(espClient);
   log_message("Connected to MQTT broker111");
   client->setBufferSize(1024);
   client->setServer(mqtt_server, mqtt_port);
@@ -13,9 +13,27 @@ MQTTClient::MQTTClient() {
     this->callback(topic, payload, length);  // 調用非靜態成員函數
   });
   log_message("Connected to MQTT broker222");
-  // client.setCallback([this](char* topic, byte* payload, unsigned int length) {
+  // CreatePubSubTopic();
+  // mqtt_subscribe_topic =
+  //     "response/iot/" + WiFi.macAddress() + "/service_vibration";
+  // mqtt_request_topic =
+  //     "request/iot/" + WiFi.macAddress() + "/service_vibration";
+  // client.setCallback([this](char* topic, byte* payload, unsigned int length)
+  // {
   //   this->onMessage(topic, payload, length);
   // });
+}
+void MQTTClient::setServiceName(String serviceString) {
+  serviceName = "/" + serviceString;
+}
+
+void MQTTClient::CreatePubSubTopic() {
+  mqtt_subscribe_topic =
+      mqtt_subscribe_topic_prefix + WiFi.macAddress() + serviceName;
+  Serial.println("mqtt_subscribe_topic" + mqtt_subscribe_topic);
+  mqtt_request_topic =
+      mqtt_request_topic_prefix + WiFi.macAddress() + serviceName;
+  Serial.println("mqtt_request_topic" + mqtt_request_topic);
 }
 
 // 處理接收到的MQTT消息
@@ -37,8 +55,9 @@ void MQTTClient::connect() {
     log_message("Connecting to MQTT broker...");
     if (client->connect(WiFi.macAddress().c_str(), mqtt_user, mqtt_pass)) {
       log_message("Connected to MQTT broker");
-      String mqtt_subscribe_topic="response/iot/"+ WiFi.macAddress() + "/service_vibration";
-      client->subscribe(mqtt_subscribe_topic.c_str(),qos_subscribe);
+      // String mqtt_subscribe_topic="response/iot/"+ WiFi.macAddress() +
+      // "/service_vibration";
+      client->subscribe(mqtt_subscribe_topic.c_str(), qos_subscribe);
     } else {
       log_message("Failed to connect to MQTT broker, retrying...");
       Serial.println(mqtt_port);
@@ -72,12 +91,14 @@ void MQTTClient::loop() {
 }
 
 // 發佈資料到指定的 MQTT topic
-void MQTTClient::publishData(String  data) {
-  String mqtt_topic1="request/iot/"+ WiFi.macAddress() + "/service_vibration";
-  if (client->publish(mqtt_topic1.c_str(), data.c_str(),qos_publish)) {
+void MQTTClient::publishData(String data) {
+  // String mqtt_topic1="request/iot/"+ WiFi.macAddress() +
+  // "/service_vibration";
+  if (client->publish(mqtt_request_topic.c_str(), data.c_str(), qos_publish)) {
     log_message("Data published successfully: " + data);
   } else {
-    log_message("Failed to publish data " + mqtt_topic1 + " " + WiFi.macAddress()  );
+    log_message("Failed to publish data " + mqtt_request_topic + " " +
+                WiFi.macAddress());
   }
 }
 
@@ -116,5 +137,3 @@ void MQTTClient::callService(const String& executable,
 
 // 日誌功能模擬
 void MQTTClient::log_message(const String& msg) { Serial.println(msg); }
-
-
