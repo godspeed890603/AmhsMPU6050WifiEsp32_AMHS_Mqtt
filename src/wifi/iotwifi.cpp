@@ -85,8 +85,8 @@ iotWifi::iotWifi(const char* tSsid, const char* tPassword, const IPAddress _Ip,
 }
 
 void iotWifi::checkWifiStat() {
-  char buffer[50];
-  int n;
+  // char buffer[50];
+  // int n;
   // sprintf(buffer, "CIM Wifi Rssi=\"%2.1f\"", getWifiRssi());
   // Serial.println(buffer);
   while (WiFi.status() != WL_CONNECTED) {
