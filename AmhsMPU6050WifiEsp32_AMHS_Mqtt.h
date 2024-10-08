@@ -13,7 +13,7 @@
 
 #include "./src/common/common.h"
 #include "./src/mpu6050/iotmpu6050.h"
-#include "./src/sqllite3db/sqllitedb.h"
+// #include "./src/sqllite3db/sqllitedb.h"
 #include "./src/wifi/iotwifi.h"
 #include "./src/mqtt/MQTTClient.h"
 

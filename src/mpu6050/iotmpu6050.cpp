@@ -1,7 +1,5 @@
 #include "iotmpu6050.h"
 
-
-
 iotMPU6050::iotMPU6050(uint8_t i2c_addr) {
   int n;
   char buffer[50];
@@ -46,26 +44,27 @@ iotMPU6050::iotMPU6050(uint8_t i2c_addr) {
 
 void iotMPU6050::getMPU6050OffsetData() {
   sensors_event_t accelEvent, gyroEvent, tempEvent;
-  int i;
-  int count;
-  long endTime;
-  long ledtime;
+  // int i;
+  // int count;
+  long endTime = 0;
+  long ledtime = 0;
+  bool* led_on = new bool(true);
 
-  iotSqliteDB* mpuDB = new iotSqliteDB();
-  mpuDB->sinitialSqliteDB(mpu_id);
-  Serial.printf(" mpuDB->createTable()");
-  mpuDB->createTable();
-  Serial.println("Check countStart...");
-  count = mpuDB->checkAccOffset();
-  Serial.printf("count=");
-  Serial.println(count);
+  iotSettingJson* mpuSettingJson = new iotSettingJson();
+  // mpuDB->check_settingJson_exist(mpu_id);
+  // Serial.printf(" mpuDB->createTable()");
+  // mpuDB->createTable();
+  // Serial.println("Check countStart...");
+  // count = mpuDB->checkAccOffset();
+  // Serial.printf("count=");
+  // Serial.println(count);
   // delay(10000);
   ledAlarm(2, 100);
 
   // 累積加速度計和陀螺儀的數據
-  bool* led_on = new bool(true);
-  if (count <= 0) {
-    // Serial.println("..test2..");
+
+  if (!(mpuSettingJson->checkSettingJsonExist(mpu_id))) {
+    Serial.println("..test2..");
     for (int i = 0; i < numSamples; i++) {
       mpu->getEvent(&accelEvent, &gyroEvent, &tempEvent);
       // Serial.println("..test3..");
@@ -99,12 +98,22 @@ void iotMPU6050::getMPU6050OffsetData() {
     //         accelOffsetX, accelOffsetY, accelOffsetZ);
     // Serial.println(buffer);
     Serial.println("..Insert Data..");
-    bool rtn = mpuDB->insertAccOffset(accelOffsetX, accelOffsetY, accelOffsetZ);
+    bool rtn = mpuSettingJson->insertAccOffset(accelOffsetX, accelOffsetY,
+                                               accelOffsetZ);
     // Serial.println("..test4..");
   }
-  // Serial.println("..test1..");
+  Serial.println("..mpuSettingJson->ReadAccOffset..");
   // 讀取加速度補償直
-  mpuDB->ReadAccOffset(&accelOffsetX, &accelOffsetY, &accelOffsetZ);
+  mpuSettingJson->ReadAccOffset(&accelOffsetX, &accelOffsetY, &accelOffsetZ);
+  Serial.println("..mpuSettingJson->ReadAccOffset..end");
+  Serial.println("========angleOffsetX_Z end===============");
+  Serial.print("accelOffsetX: ");
+  Serial.println(accelOffsetX);
+  Serial.print("accelOffsetY: ");
+  Serial.println(accelOffsetY);
+  Serial.print("accelOffsetZ: ");
+  Serial.println(accelOffsetZ);
+  Serial.println("=======================");
 
   // 計算角度補償
   Serial.println("========計算角度補償===============");
@@ -123,14 +132,14 @@ void iotMPU6050::getMPU6050OffsetData() {
   Serial.print("accelOffsetZ: ");
   Serial.println(accelOffsetZ);
   Serial.println("=======================");
-  mpuDB->dbClose();
-  delete (mpuDB);
-  Serial.println("======== delete (mpuDB);===============");
+  // mpuSettingJson->dbClose();
+  delete (mpuSettingJson);
+  Serial.println("======== delete (mpuSettingJson);===============");
 }
 
 void iotMPU6050::getMPU6050Event() {
-  char buffer[50];
-  int n;
+  // char buffer[50];
+  // int n;
   sensors_event_t a, g, temp;
   mpu->getEvent(&a, &g, &temp);
   // mpu->reset();
@@ -139,8 +148,8 @@ void iotMPU6050::getMPU6050Event() {
 }
 void iotMPU6050::getMPU6050Acc(sensors_event_t a, sensors_event_t temp,
                                sensors_event_t g) {
-  char buffer[50];
-  int n;
+  // char buffer[50];
+  // int n;
   //   sensors_event_t a, g, temp;
   //   mpu->getEvent(&a, &g, &temp);
 
@@ -170,7 +179,7 @@ bool iotMPU6050::getMPU6050Noise(float x, float y, float z) {
   // 忽略或过滤异常数据
   if (abs(x_acc) > MAX_ACCELERATION || abs(y_acc) > MAX_ACCELERATION ||
       abs(z_acc) > MAX_ACCELERATION) {
-    //Serial.println("First Over");
+    // Serial.println("First Over");
     return false;
   }
 
@@ -189,8 +198,8 @@ bool iotMPU6050::getMPU6050Noise(float x, float y, float z) {
   return true;
 }
 void iotMPU6050::getMPU6050Angle(sensors_event_t a, sensors_event_t g) {
-  char buffer[500];
-  int n;
+  // char buffer[500];
+  // int n;
   // sprintf(buffer, "[Angle]i2c_addr 0x%x working..", mpu_i2c_addr);
   // Serial.println(buffer);
   // 計算傾斜角度
@@ -210,8 +219,8 @@ void iotMPU6050::getMPU6050Angle(sensors_event_t a, sensors_event_t g) {
   getMPU6050AngleMaxMin(x_z_ang, y_z_ang);
 }
 void iotMPU6050::getMPU6050AccMaxMin(float x, float y, float z) {
-  char buffer[200];
-  int n;
+  // char buffer[200];
+  // int n;
   // sprintf(buffer, "[getMPU6050AccMaxMin ini]initial_acc_flg=%d ",
   //         initial_acc_flg);
   // Serial.println(buffer);
@@ -243,8 +252,8 @@ void iotMPU6050::getMPU6050AccMaxMin(float x, float y, float z) {
   if (z < min_z_acc) min_z_acc = z;
 }
 void iotMPU6050::getMPU6050AngleMaxMin(float x_z, float y_z) {
-  char buffer[500];
-  int n;
+  // char buffer[500];
+  // int n;
   // Serial.println("test1....");
   //  get max
   if (initial_ang_flg == true) {
@@ -339,19 +348,19 @@ void iotMPU6050::resetMPU6050Data() {
 }
 //--------------------------------------------------------------------------------------
 
-
 String iotMPU6050::getMPU6050Json() {
   // 創建一個足夠大的 StaticJsonDocument
   StaticJsonDocument<1024> doc;
 
   // 將十進制的 I2C 地址轉換為十六進制字符串
-  char hex_str[10];  
+  char hex_str[10];
   sprintf(hex_str, "%X", mpu_i2c_addr);  // 將 I2C 地址轉換為十六進制
 
   // 構建 SENSOR_ID
-  String SENSOR_ID = WiFi.macAddress();;
+  String SENSOR_ID = WiFi.macAddress();
+  ;
 
-    // Add the mac_address and correlation_id
+  // Add the mac_address and correlation_id
   doc["mac_address"] = WiFi.macAddress();
   doc["correlation_id"] = "correlation_id";
   // 創建嵌套在 "data" 下的 JSON 對象
@@ -377,7 +386,6 @@ String iotMPU6050::getMPU6050Json() {
   data["min_x_z_ang"] = min_x_z_ang;
   data["min_y_z_ang"] = min_y_z_ang;
   data["temperature"] = temperature;
-
 
   // 使用 String 將 JSON 序列化
   String jsonOutput;

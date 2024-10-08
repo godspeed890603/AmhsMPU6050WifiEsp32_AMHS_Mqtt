@@ -82,9 +82,9 @@ void loop() {
 
 // 核心1的Task函式
 void mpu6050_task(void* parameter) {
-  char buffer[50];
-  long otaTime = 0;
-  int n;
+  // char buffer[50];
+  // long otaTime = 0;
+  // int n;
   mpu_0x68 = new iotMPU6050(0x68);
   Serial.println("mpu_0x68 initial OK");
   // mpu_0x69 = new iotMPU6050(0x69);
@@ -152,7 +152,7 @@ void mpu6050_task(void* parameter) {
 
 // 核心0的Task函式,Handle MPU6050_0x68
 void wifiTask_0x68(void* parameter) {
-  unsigned long wificheckTime = 0;
+  // unsigned long wificheckTime = 0;
   while (1) {
     endTime = micros();
     // Serial.println("Task running on Core 0");
