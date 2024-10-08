@@ -10,7 +10,7 @@
 
 const int ledPin = 2;  // 將LED連接到GPIO 2
 const int sencond_1=1000000;
-const int mpu_loop_scan_time=5;
+const int mpu_loop_scan_time=1;
 void ledDisplay(bool* led_on);
 void ledAlarm(int loopCount, int delayTime);
 
@@ -24,6 +24,7 @@ extern IPAddress ip;
 extern IPAddress subnet;
 extern IPAddress gateway;
 extern String webserverHtml_Header;
+
 
 
 //mpu setting

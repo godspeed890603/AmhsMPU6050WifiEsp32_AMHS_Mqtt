@@ -9,21 +9,11 @@
 #include <string>
 
 #include "../common/common.h"
-#include "../sqllite3db/sqllitedb.h"
+#include "../Json/settingJson.h"
 
 class iotMPU6050 {  // The class
  public:            // Access specifier
-  // http://172.20.10.4:2878/amhsSensor/amhsVibration.php?SENSOR_ID=CIMPARTICLE&DATA_CNT=6&DATA_001=163&DATA_002=52&DATA_003=1&DATA_004=0&DATA_005=0&DATA_006=0
 
-  // String webserverHtml_Header =
-  //     "http://172.27.17.4:2878/amhsSensor/amhsVibration.php?";
-  // String webserverHtml_Header =
-  //     "http://172.27.51.73:8614/amhsSensor/amhsVibration.php?";
-  // String webserverHtml_Header =
-  //     "http://172.27.51.73:8614/amhsSensor/amhsVibration_cim.php?";
-
-  // String webserverHtml_Header =
-  //      "http://172.28.78.154:80/amhsSensor/amhsVibration_cim.php?";
   const int MAX_ACCELERATION = 10.0;
   const int MAX_ACCELERATION_X = 4.0;
   const int MAX_ACCELERATION_Y = 3.5;
@@ -90,7 +80,8 @@ class iotMPU6050 {  // The class
   // 累積數據的次數
   float numSamples = 1000.0;
 
-  iotSqliteDB* mpuDB;
+  // iotSqliteDB* mpuDB;
+  iotSettingJson* mpuSettingJson;
 };
 
 #endif /* IOTMPU6050_H */

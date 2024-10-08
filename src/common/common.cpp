@@ -32,10 +32,7 @@ IPAddress subnet(255, 255, 224, 0);   // 设置子网掩码
 IPAddress gateway(172, 27, 31, 254);  // 设置网关IP地址
 
 
-String webserverHtml_Header =
-    "http://172.27.51.73/amhsSensor/amhsVibration.php?";
-// String webserverHtml_Header =
-//     "http://172.20.10.3:8080/amhsSensor/amhsVibration.php?";
+
 
 // /**
 //  * @brief Accelerometer range options
