@@ -1,33 +1,44 @@
 #include "iotmpu6050.h"
 
 iotMPU6050::iotMPU6050(uint8_t i2c_addr) {
-  int n;
+  // int n;
   char buffer[50];
 
-  // pinMode(ledPin, OUTPUT);  // 設置LED引腳為輸出
-
-  mpu_i2c_addr = (unsigned int)i2c_addr;
   mpu = new Adafruit_MPU6050();
 
+  mpu_i2c_addr = (unsigned int)i2c_addr;
   char hex_str[10];                      // 存储十六进制字符串的数组
   sprintf(hex_str, "%X", mpu_i2c_addr);  // 将十进制数转换为十六进制字符串
   int hex_value;
   sscanf(hex_str, "%X", &hex_value);  // 将十六进制字符串转换为整数
   mpu_id = (String)hex_str;
 
-  if (!mpu->begin(i2c_addr)) {
-    n = sprintf(buffer, "MPU6050 not found i2c_addr\"%x\"",
-                (unsigned int)i2c_addr);
-    Serial.println(buffer);
+  esp_chip_info_t chip_info;
+  esp_chip_info(&chip_info);
 
-    while (1) {
-      delay(10);
-    }
-  } else {
-    n = sprintf(buffer, "MPU6050  found i2c_addr 0x\"%x\"",
-                (unsigned int)i2c_addr);
-    Serial.println(buffer);
+  // 檢查 CHip type
+  printf("This is an ESP32 chip with %d CPU cores, WiFi%s%s, ", chip_info.cores,
+         (chip_info.features & CHIP_FEATURE_BT) ? "/BT" : "",
+         (chip_info.features & CHIP_FEATURE_BLE) ? "/BLE" : "");
+  switch (chip_info.model) {
+    case CHIP_ESP32:
+      initialChipEsp32(i2c_addr);
+      break;
+    case CHIP_ESP32S2:
+      printf("Chip Model: ESP32-S2\n");
+      break;
+    case CHIP_ESP32S3:
+      initialChipEsp32SxCx();
+      break;
+    case CHIP_ESP32C6:
+      initialChipEsp32SxCx();
+      break;
+    default:
+      printf("Unknown chip model\n");
+      break;
   }
+
+  printf("Revision number: %d\n", chip_info.revision);
 
   // 設置量程範圍為±8g和±1000dps
   mpu->setAccelerometerRange(mpu_accel_range);
@@ -42,6 +53,37 @@ iotMPU6050::iotMPU6050(uint8_t i2c_addr) {
   getMPU6050OffsetData();
 }
 
+void iotMPU6050::initialChipEsp32(uint8_t i2c_addr) {
+  char buffer[50];
+  int n;
+  printf("Chip Model: ESP32\n");
+  if (!mpu->begin(i2c_addr)) {
+    n = sprintf(buffer, "MPU6050 not found i2c_addr\"%x\"",
+                (unsigned int)i2c_addr);
+    Serial.println(buffer);
+
+    while (1) {
+      delay(10);
+    }
+  } else {
+    n = sprintf(buffer, "MPU6050  found i2c_addr 0x\"%x\"",
+                (unsigned int)i2c_addr);
+    Serial.println(buffer);
+  }
+}
+void iotMPU6050::initialChipEsp32SxCx() {
+  printf("Chip Model: ESP32-S3 or ESP32-C6\n");
+  // 初始化 I2C 接口，使用指定的引脚
+  Wire.begin(SDA_PIN, SCL_PIN);
+  // 初始化 MPU6050
+  if (!mpu->begin()) {
+    Serial.println("MPU6050 初始化失败！");
+    while (1) {
+      delay(10);  // 停止运行
+    }
+  }
+}
+
 void iotMPU6050::getMPU6050OffsetData() {
   sensors_event_t accelEvent, gyroEvent, tempEvent;
   // int i;
@@ -51,14 +93,6 @@ void iotMPU6050::getMPU6050OffsetData() {
   bool* led_on = new bool(true);
 
   iotSettingJson* mpuSettingJson = new iotSettingJson();
-  // mpuDB->check_settingJson_exist(mpu_id);
-  // Serial.printf(" mpuDB->createTable()");
-  // mpuDB->createTable();
-  // Serial.println("Check countStart...");
-  // count = mpuDB->checkAccOffset();
-  // Serial.printf("count=");
-  // Serial.println(count);
-  // delay(10000);
   ledAlarm(2, 100);
 
   // 累積加速度計和陀螺儀的數據
@@ -148,14 +182,14 @@ void iotMPU6050::getMPU6050Event() {
 }
 void iotMPU6050::getMPU6050Acc(sensors_event_t a, sensors_event_t temp,
                                sensors_event_t g) {
-  // char buffer[50];
-  // int n;
+  char buffer[50];
+  int n;
   //   sensors_event_t a, g, temp;
   //   mpu->getEvent(&a, &g, &temp);
 
   x_acc = a.acceleration.x - accelOffsetX;
-  // sprintf(buffer, "[y_acc=%2.1f working..", x_acc);
-  //  Serial.println(buffer);
+  // sprintf(buffer, "[x_acc=%2.1f working..", x_acc);
+  // Serial.println(buffer);
   y_acc = a.acceleration.y - accelOffsetY;
   // sprintf(buffer, "[y_acc=%2.1f working..", y_acc);
   // Serial.println(buffer);
@@ -288,41 +322,6 @@ void iotMPU6050::getMPU6050AngleMaxMin(float x_z, float y_z) {
 }
 void iotMPU6050::getMPU6050Temperature() {}
 
-// String iotMPU6050::getMPU6050WebHtml() {
-//   String webHtml;
-//   char buffer[1000];
-//   int n;
-//   // sprintf(buffer, "[getMPU6050WebHtml]i2c_addr 0x%x working..",
-//   // mpu_i2c_addr); Serial.println(buffer);
-//   // sprintf(buffer, "0x%x", mpu_i2c_addr);
-//   char hex_str[10];  // 存储十六进制字符串的数组
-//   // Serial.println("web string start....1 ");
-//   sprintf(hex_str, "%X", mpu_i2c_addr);  // 将十进制数转换为十六进制字符串
-//   int hex_value;
-//   // Serial.println("web string start....2 ");
-//   sscanf(hex_str, "%X", &hex_value);  // 将十六进制字符串转换为整数
-//   // Serial.println("web string start.... ");
-
-//   // 172.27.17.232
-//   String SENSOR_ID = ipAddr + "_0x" + (String)hex_str;
-//   webHtml =
-//       webserverHtml_Header + "SENSOR_ID=" + macAddress +
-//       "&machine_ID=" + "AGV" + "&ip=" + ipAddr +  // +
-//       "&rssi=" + (String)rssi + "&x_acc=" + (String)x_acc +
-//       "&y_acc=" + (String)y_acc + "&z_acc=" + (String)z_acc +
-//       "&max_x_acc=" + (String)max_x_acc + "&max_y_acc=" + (String)max_y_acc +
-//       "&max_z_acc=" + (String)max_z_acc + "&min_x_acc=" + (String)min_x_acc +
-//       "&min_y_acc=" + (String)min_y_acc + "&min_z_acc=" + (String)min_z_acc +
-//       "&x_z_ang=" + (String)x_z_ang + "&y_z_ang=" + (String)y_z_ang +
-//       "&max_x_z_ang=" + (String)max_x_z_ang +
-//       "&max_y_z_ang=" + (String)max_y_z_ang +
-//       "&min_x_z_ang=" + (String)min_x_z_ang +
-//       "&min_y_z_ang=" + (String)min_y_z_ang +
-//       "&temperature=" + (String)temperature;
-
-//   return webHtml;
-// }
-
 void iotMPU6050::resetMPU6050Data() {
   // acc
   // x_acc = 0.0;
@@ -366,26 +365,27 @@ String iotMPU6050::getMPU6050Json() {
   // 創建嵌套在 "data" 下的 JSON 對象
   JsonObject data = doc.createNestedObject("data");
   // 添加鍵值對到 "data" 中
+  // 添加鍵值對到 "data" 中
   data["SENSOR_ID"] = WiFi.macAddress();
   data["machine_ID"] = "AGV";
   data["ip"] = ipAddr;
   data["rssi"] = rssi;
-  data["x_acc"] = x_acc;
-  data["y_acc"] = y_acc;
-  data["z_acc"] = z_acc;
-  data["max_x_acc"] = max_x_acc;
-  data["max_y_acc"] = max_y_acc;
-  data["max_z_acc"] = max_z_acc;
-  data["min_x_acc"] = min_x_acc;
-  data["min_y_acc"] = min_y_acc;
-  data["min_z_acc"] = min_z_acc;
-  data["x_z_ang"] = x_z_ang;
-  data["y_z_ang"] = y_z_ang;
-  data["max_x_z_ang"] = max_x_z_ang;
-  data["max_y_z_ang"] = max_y_z_ang;
-  data["min_x_z_ang"] = min_x_z_ang;
-  data["min_y_z_ang"] = min_y_z_ang;
-  data["temperature"] = temperature;
+  data["x_acc"] = String(x_acc, 2);
+  data["y_acc"] = String(y_acc, 2);
+  data["z_acc"] = String(z_acc, 2);
+  data["max_x_acc"] = String(max_x_acc, 2);
+  data["max_y_acc"] = String(max_y_acc, 2);
+  data["max_z_acc"] = String(min_z_acc, 2);
+  data["min_x_acc"] = String(min_y_acc, 2);
+  data["min_y_acc"] = String(min_y_acc, 2);
+  data["min_z_acc"] = String(min_z_acc, 2);
+  data["x_z_ang"] = String(x_z_ang, 2);
+  data["y_z_ang"] = String(y_z_ang, 2);
+  data["max_x_z_ang"] = String(max_x_z_ang, 2);
+  data["max_y_z_ang"] = String(max_y_z_ang, 2);
+  data["min_x_z_ang"] = String(min_x_z_ang, 2);
+  data["min_y_z_ang"] = String(min_y_z_ang, 2);
+  data["temperature"] = String(temperature, 2);
 
   // 使用 String 將 JSON 序列化
   String jsonOutput;

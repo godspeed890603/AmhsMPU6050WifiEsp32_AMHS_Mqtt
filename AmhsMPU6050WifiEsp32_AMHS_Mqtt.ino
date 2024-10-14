@@ -121,7 +121,7 @@ void mpu6050_task(void* parameter) {
     if (endTime - startTime1 >
         mpu_loop_scan_time * sencond_1) {  // upload period
       // 取得互斥鎖
-      Serial.println("Core 1 xSemaphoreTake...");
+      // Serial.println("Core 1 xSemaphoreTake...");
       xSemaphoreTake(mutex, portMAX_DELAY);
       //   0x68寫入資料到佇列
       // Serial.println("Core 1 Send mpu_0x68 Start...");
@@ -138,7 +138,7 @@ void mpu6050_task(void* parameter) {
       // 釋放互斥鎖
 
       xSemaphoreGive(mutex);
-      Serial.println("Core 1 xSemaphoreGive...");
+      // Serial.println("Core 1 xSemaphoreGive...");
 
       startTime1 = endTime;
       // printMemoryStats();
@@ -270,9 +270,11 @@ void getQueuebyMpuAndUploadMqtt(QueueHandle_t queue) {
     String mqttData = String(receivedData);
     Serial.println(mqttData);
     free(receivedData);  // Free the received data from the queue
-    mqttClientHandler.publishData(mqttData);
-
-    Serial.println("MQTT data sent successfully.");
+    if (mqttClientHandler.publishData(mqttData)) {
+      Serial.println("MQTT data sent successfully.");
+    } else {
+      Serial.println("MQTT data sent failture....");
+    }
 
   } catch (const std::exception& e) {
     Serial.println(

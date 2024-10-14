@@ -38,13 +38,13 @@ void MQTTClient::CreatePubSubTopic() {
 
 // 處理接收到的MQTT消息
 void MQTTClient::callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.println();
+  // Serial.print("Message arrived [");
+  // Serial.print(topic);
+  // Serial.print("] ");
+  // for (int i = 0; i < length; i++) {
+  //   Serial.print((char)payload[i]);
+  // }
+  Serial.println("Message arrive......................");
 }
 
 // 連接到 MQTT 伺服器
@@ -91,14 +91,16 @@ void MQTTClient::loop() {
 }
 
 // 發佈資料到指定的 MQTT topic
-void MQTTClient::publishData(String data) {
+bool MQTTClient::publishData(String data) {
   // String mqtt_topic1="request/iot/"+ WiFi.macAddress() +
   // "/service_vibration";
   if (client->publish(mqtt_request_topic.c_str(), data.c_str(), qos_publish)) {
     log_message("Data published successfully: " + data);
+    return true;
   } else {
     log_message("Failed to publish data " + mqtt_request_topic + " " +
                 WiFi.macAddress());
+    return false;
   }
 }
 

@@ -1,7 +1,7 @@
 #ifndef MQTTCLIENT_H
 #define MQTTCLIENT_H
 
-#define MQTT_MAX_PACKET_SIZE 512
+// #define MQTT_MAX_PACKET_SIZE 512
 
 #include <PubSubClient.h>
 #include <WiFi.h>
@@ -22,7 +22,7 @@ class MQTTClient {
   void loop();
 
   // 發佈資料到指定的 MQTT topic
-  void publishData(String data);
+  bool publishData(String data);
 
   void setServiceName(String serviceString);
   void CreatePubSubTopic();
@@ -51,7 +51,7 @@ class MQTTClient {
 
   // MQTT 設定
   // const char* mqtt_server = "172.20.10.4";  // 替換為您的 MQTT broker 地址
-  const char* mqtt_server = "172.27.17.4";  // 替換為您的 MQTT broker 地址
+  const char* mqtt_server = "172.27.17.250";  // 替換為您的 MQTT broker 地址
   const int mqtt_port = 1883;        // 替換為您的 MQTT broker 端口
   const char* mqtt_user = "eason";   // 替換為您的 MQTT 使用者名稱
   const char* mqtt_pass = "qazwsx";  // 替換為您的 MQTT 密碼
@@ -68,7 +68,7 @@ class MQTTClient {
   // 當前主題
 
   int qos_subscribe = 1;
-  int qos_publish = 2;
+  int qos_publish = 1;
 };
 
 #endif  // MQTTCLIENT_H

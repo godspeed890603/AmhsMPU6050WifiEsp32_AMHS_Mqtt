@@ -4,10 +4,17 @@
 #include <Adafruit_MPU6050.h>
 #include <ArduinoJson.h>
 #include <Arduino.h>
+
+#include "esp_chip_info.h"
+#include "esp_system.h"
+#include <stdio.h>
+
 // #include <ArduinoOTA.h>  //V1.11
 
 #include <string>
-
+// 指定 SDA 和 SCL 引脚
+#define SDA_PIN 1
+#define SCL_PIN 2
 #include "../common/common.h"
 #include "../Json/settingJson.h"
 
@@ -64,6 +71,8 @@ class iotMPU6050 {  // The class
   void getMPU6050OffsetData();
   void resetMPU6050Data();
   bool getMPU6050Noise(float x, float y, float z);
+  void initialChipEsp32(uint8_t i2c_addr);
+  void initialChipEsp32SxCx();
   String getMPU6050Json();//2024/09/24 FOR MQTT
 
   // 設置校準偏移量為0
