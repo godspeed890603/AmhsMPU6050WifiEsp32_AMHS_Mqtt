@@ -363,7 +363,8 @@ String iotMPU6050::getMPU6050Json() {
   doc["mac_address"] = WiFi.macAddress();
   doc["correlation_id"] = "correlation_id";
   // 創建嵌套在 "data" 下的 JSON 對象
-  JsonObject data = doc.createNestedObject("data");
+  JsonObject data = doc["data"].to<JsonObject>();
+  // JsonObject data = doc.createNestedObject("data");
   // 添加鍵值對到 "data" 中
   // 添加鍵值對到 "data" 中
   data["SENSOR_ID"] = WiFi.macAddress();
