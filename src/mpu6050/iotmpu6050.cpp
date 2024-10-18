@@ -350,6 +350,7 @@ void iotMPU6050::resetMPU6050Data() {
 String iotMPU6050::getMPU6050Json() {
   // 創建一個足夠大的 StaticJsonDocument
   StaticJsonDocument<1024> doc;
+  UUIDGenerator uuidGen;
 
   // 將十進制的 I2C 地址轉換為十六進制字符串
   char hex_str[10];
@@ -361,7 +362,7 @@ String iotMPU6050::getMPU6050Json() {
 
   // Add the mac_address and correlation_id
   doc["mac_address"] = WiFi.macAddress();
-  doc["correlation_id"] = "correlation_id";
+  doc["correlation_id"] =  uuidGen.generateRandomUUID();  // 替換為實際的 correlation ID
   // 創建嵌套在 "data" 下的 JSON 對象
   JsonObject data = doc["data"].to<JsonObject>();
   // JsonObject data = doc.createNestedObject("data");
@@ -376,8 +377,8 @@ String iotMPU6050::getMPU6050Json() {
   data["z_acc"] = String(z_acc, 2);
   data["max_x_acc"] = String(max_x_acc, 2);
   data["max_y_acc"] = String(max_y_acc, 2);
-  data["max_z_acc"] = String(min_z_acc, 2);
-  data["min_x_acc"] = String(min_y_acc, 2);
+  data["max_z_acc"] = String(max_z_acc, 2);
+  data["min_x_acc"] = String(min_x_acc, 2);
   data["min_y_acc"] = String(min_y_acc, 2);
   data["min_z_acc"] = String(min_z_acc, 2);
   data["x_z_ang"] = String(x_z_ang, 2);

@@ -17,6 +17,7 @@
 #define SCL_PIN 2
 #include "../common/common.h"
 #include "../Json/settingJson.h"
+#include "./src/uuid/uuidgenerator.h"
 
 class iotMPU6050 {  // The class
  public:            // Access specifier
