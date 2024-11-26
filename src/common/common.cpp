@@ -13,23 +13,23 @@
 // IPAddress subnet(255, 255, 254, 0);   // 设置子网掩码
 // IPAddress gateway(172, 27, 63, 254);  // 设置网关IP地址
 
-//fab use
-// const char* ssid = "CIM";
-// const char* pwd = "hsd5052880";
-// IPAddress ip(172, 27, 17, 200);       // 设置为你想要的静态IP地址
-// IPAddress subnet(255, 255, 224, 0);   // 设置子网掩码
-// IPAddress gateway(172, 27, 31, 254);  // 设置网关IP地址
-
-
-
-// // //OFFICE use
-const char* ssid = "CIM_WIFI";
-const char* pwd = "hsd@5052880";
-// char* ssid = "CIM_WIFI";
-// char* pwd = "hsd@5052880";
-IPAddress ip(172, 27, 17, 234);       // 设置为你想要的静态IP地址
+// fab use
+const char* ssid = "CIM";
+const char* pwd = "hsd5052880";
+IPAddress ip(172, 27, 17, 200);       // 设置为你想要的静态IP地址
 IPAddress subnet(255, 255, 224, 0);   // 设置子网掩码
 IPAddress gateway(172, 27, 31, 254);  // 设置网关IP地址
+
+
+
+// // // //OFFICE use
+// const char* ssid = "CIM_WIFI";
+// const char* pwd = "hsd@5052880";
+// // char* ssid = "CIM_WIFI";
+// // char* pwd = "hsd@5052880";
+// IPAddress ip(172, 27, 17, 234);       // 设置为你想要的静态IP地址
+// IPAddress subnet(255, 255, 224, 0);   // 设置子网掩码
+// IPAddress gateway(172, 27, 31, 254);  // 设置网关IP地址
 
 
 
