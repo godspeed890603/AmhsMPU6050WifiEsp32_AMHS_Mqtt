@@ -22,6 +22,11 @@ mqtt_request_topic =
       mqtt_request_topic_prefix + WiFi.macAddress() + serviceName;<br><br>
 8.ESP32透過同一UUID發送與接收來識別data pair<br>
 doc["correlation_id"] =  uuidGen.generateRandomUUID();  // 替換為實際的 correlation ID<br><br>
+9.device<br><br>
+https://github.com/godspeed890603/AmhsMPU6050WifiEsp32_AMHS_Mqtt/tree/master/Device<br><br>
+10.result<br><br>
+https://github.com/godspeed890603/AmhsMPU6050WifiEsp32_AMHS_Mqtt/tree/master/Result<br><br>
+
 
 
 
