@@ -9,7 +9,7 @@ Stocker Crane走行、伺服馬達震動資料收集屬於監控行為!只要區
 ## 架構說明
 1.採用RTOS的方式<br><br>
 2.xTaskCreatePinnedToCore mpu6050_task、wifiTask_0x68，將讀取MPU6050與連結IOTView(mqtt)方開，藉以更有資料收集與傳輸<br><br>
-3.瞭個TASK QueueHandle_t與SemaphoreHandle_t來協調作業<br><br>
+3.兩個TASK QueueHandle_t與SemaphoreHandle_t來協調作業<br><br>
 4.mpu6050需要做水平補正<br><br>
 6.原本只用SQLLITE儲存補正值，後續改為JSON<br><br>
 7.Mqtt subject<br>
