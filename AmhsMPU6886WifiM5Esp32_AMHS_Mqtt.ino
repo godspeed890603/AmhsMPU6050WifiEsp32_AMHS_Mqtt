@@ -1,9 +1,9 @@
 
-#include ".\AmhsMPU6050WifiEsp32_AMHS_Mqtt.h"
+#include ".\AmhsMPU6886WifiM5Esp32_AMHS_Mqtt.h"
 
 iotWifi* fabIotWifi;
-iotMPU6050* mpu_0x68;
-// iotMPU6050* mpu_0x69;
+iotMPU6886* mpu_0x68;
+// iotMPU6886* mpu_0x69;
 MQTTClient mqttClientHandler;
 String service = "service_vibration";
 
@@ -11,10 +11,12 @@ unsigned long startTime1 = 0;
 unsigned long startTime2 = 0;
 unsigned long endTime = 0;
 unsigned long timeDiff;
+long otaTime = 0;
+long otaEndTime = 0;
 
-void taskCreateMpu6050PinnedToCore() {
+void taskCreateMPU6886PinnedToCore() {
   // 建立兩個Task，分別指派到核心1和核心2
-  xTaskCreatePinnedToCore(mpu6050_task,   // Task函式
+  xTaskCreatePinnedToCore(MPU6886_task,   // Task函式
                           "Task Core 1",  // 任務名稱
                           10000,          // 堆疊大小 (bytes)
                           NULL,           // 傳遞給Task的參數
@@ -55,8 +57,31 @@ void setup() {
   fabIotWifi = new iotWifi(ssid, pwd, ip, subnet, gateway);
   // Serial.println("initial WiFi...1");
   fabIotWifi->initialWifi();
-  // Serial.println("initial WiFi...2");
-  delay(100);
+
+  // display re-calabration message
+  // auto cfg = M5.config();
+  cfg = M5.config();
+  Serial.println("create cfg completed");
+  AtomS3.begin(cfg);
+  Serial.println("create AtomS3.begin(cfg) completed");
+
+  M5Display("Amhs XYZ",0.8);
+
+  // AtomS3.Display.clear();
+  // AtomS3.Display.setTextColor(GREEN);
+  // AtomS3.Display.setTextDatum(middle_center);
+  // AtomS3.Display.setFont(&fonts::Orbitron_Light_24);
+  // AtomS3.Display.setTextSize(0.8);
+  // AtomS3.Display.drawString("Amhs XYZ", AtomS3.Display.width() / 2,
+  //                           AtomS3.Display.height() / 2);
+  // Serial.println("Click BtnA to Test");
+
+  iotSettingJson* mpuSettingJson = new iotSettingJson();
+  // Serial.println("create AtomS3 completed");
+
+  
+  //  Serial.println("initial WiFi...2");
+  delay(2000);
   mqttClientHandler.setServiceName(service);
   mqttClientHandler.CreatePubSubTopic();
   mqttClientHandler.connect();  // 連接到 MQTT broker
@@ -66,31 +91,51 @@ void setup() {
   dataQueue_0x68 = xQueueCreate(QUEUE_SIZE, sizeof(char*));
   // dataQueue_0x69 = xQueueCreate(QUEUE_SIZE, sizeof(char*));
 
+  Serial.println("create task");
   // 雙核心工作分配
-  taskCreateMpu6050PinnedToCore();
+  taskCreateMPU6886PinnedToCore();
+  Serial.println("create task completed");
 }
-long otaTime = 0;
-long otaEndTime = 0;
+
 void loop() {
-  // Serial.println("main loop started");
-  otaEndTime = micros();
-  if (otaEndTime - otaTime > 0.05 * sencond_1) {
-    xSemaphoreTake(mutex, portMAX_DELAY);
-    // Serial.println("main loop started");
-    ArduinoOTA.handle();
-    xSemaphoreGive(mutex);
-    otaTime = otaEndTime;
+  // // Serial.println("main loop started");
+  // otaEndTime = micros();
+  // if (otaEndTime - otaTime > 0.05 * sencond_1) {
+  //   xSemaphoreTake(mutex, portMAX_DELAY);
+  //   // Serial.println("main loop started");
+  //   ArduinoOTA.handle();
+  //   xSemaphoreGive(mutex);
+  //   otaTime = otaEndTime;
+  // }
+  // delete file and restart
+  //Serial.println("Loop");
+  AtomS3.update();
+  if (AtomS3.BtnA.wasPressed()) {
+    // AtomS3.Display.clear();
+    // AtomS3.Display.drawString("Pressed", AtomS3.Display.width() / 2,
+    //                           AtomS3.Display.height() / 2);
+    // Serial.println("Pressed");
+    mpuSettingJson->DeleteOffsetFile();
+    // Serial.println("Released");
+    AtomS3.Display.clear();
+    delay(100);
+    ESP.restart();
   }
+  // if (AtomS3.BtnA.wasReleased()) {
+  //   AtomS3.Display.clear();
+  //   AtomS3.Display.drawString("Released", AtomS3.Display.width() / 2,
+  //                             AtomS3.Display.height() / 2);
+  // }
 }
 
 // 核心1的Task函式
-void mpu6050_task(void* parameter) {
+void MPU6886_task(void* parameter) {
   // char buffer[50];
   // long otaTime = 0;
   // int n;
-  mpu_0x68 = new iotMPU6050(0x68);
+  mpu_0x68 = new iotMPU6886(0x68);
   Serial.println("mpu_0x68 initial OK");
-  // mpu_0x69 = new iotMPU6050(0x69);
+  // mpu_0x69 = new iotMPU6886(0x69);
 
   while (1) {
     if (WiFi.status() == WL_CONNECTED) {
@@ -102,7 +147,7 @@ void mpu6050_task(void* parameter) {
     vTaskDelay(pdMS_TO_TICKS(2000));
   }
 
-  // mpu6050 0x68 & 0x69初始化後,
+  // MPU6886 0x68 & 0x69初始化後,
   // 啟動上傳程序
   taskCreateWifiPinnedToCore();
 
@@ -113,9 +158,9 @@ void mpu6050_task(void* parameter) {
     // Serial.println("Task running on Core 1");
     endTime = micros();
     mpu_0x68->rssi = fabIotWifi->getWifiRssi();
-    mpu_0x68->getMPU6050Event();
+    mpu_0x68->getMPU6886Event();
     // mpu_0x69->rssi = fabIotWifi->getWifiRssi();
-    // mpu_0x69->getMPU6050Event();
+    // mpu_0x69->getMPU6886Event();
 
     // if (WiFi.status() == WL_CONNECTED) {
     if (endTime - startTime1 >
@@ -127,14 +172,14 @@ void mpu6050_task(void* parameter) {
       // Serial.println("Core 1 Send mpu_0x68 Start...");
       sendDataToWifi(dataQueue_0x68, mpu_0x68);
       // Serial.println("Core 1 Send mpu_0x68 End...");
-      mpu6050DataReset(mpu_0x68);
+      MPU6886DataReset(mpu_0x68);
       // vTaskDelay(pdMS_TO_TICKS(2));
       //  0x69寫入資料到佇列
       //  寫入資料到佇列
       // Serial.println("Core 1 Send mpu_0x69 Start...");
       // sendDataToWifi(dataQueue_0x69, mpu_0x69);
       // Serial.println("Core 1 Send mpu_0x69 end...");
-      // mpu6050DataReset(mpu_0x69);
+      // MPU6886DataReset(mpu_0x69);
       // 釋放互斥鎖
 
       xSemaphoreGive(mutex);
@@ -153,7 +198,7 @@ void mpu6050_task(void* parameter) {
   }
 }
 
-// 核心0的Task函式,Handle MPU6050_0x68
+// 核心0的Task函式,Handle MPU6886_0x68
 void wifiTask_0x68(void* parameter) {
   // unsigned long wificheckTime = 0;
   while (1) {
@@ -172,7 +217,7 @@ void wifiTask_0x68(void* parameter) {
   }
 }
 
-// 核心0的Task函式,Handle MPU6050_0x69
+// 核心0的Task函式,Handle MPU6886_0x69
 // void wifiTask_0x69(void* parameter) {
 //   // delay(10000);
 //   unsigned long wificheckTime = 0;
@@ -191,23 +236,23 @@ void wifiTask_0x68(void* parameter) {
 //   }
 // }
 
-void mpu6050DataReset(iotMPU6050* mpu) {
+void MPU6886DataReset(iotMPU6886* mpu) {
   // Serial.println("data reset");
-  mpu->resetMPU6050Data();
+  mpu->resetMPU6886Data();
 }
 
-void sendDataToWifi(QueueHandle_t queue, iotMPU6050* mpu) {
+void sendDataToWifi(QueueHandle_t queue, iotMPU6886* mpu) {
   // // 複製字串並取得指標
 
   try {
     // if (WiFi.status() == WL_CONNECTED) {
-    // String webHtml = mpu->getMPU6050WebHtml();
-    String mpu6050Json = mpu->getMPU6050Json();
-    char* data = strdup(mpu6050Json.c_str());  // data 需要被 free 因為是用share
+    // String webHtml = mpu->getMPU6886WebHtml();
+    String MPU6886Json = mpu->getMPU6886Json();
+    char* data = strdup(MPU6886Json.c_str());  // data 需要被 free 因為是用share
     // memory..所以在接收端free
     xQueueSend(queue, &data, portMAX_DELAY);
 
-    mpu6050DataReset(mpu);
+    MPU6886DataReset(mpu);
 
   } catch (const std::exception& e) {
     // std::cerr << e.what() << '\n';

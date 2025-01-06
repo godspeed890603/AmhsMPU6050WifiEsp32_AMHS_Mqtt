@@ -1,10 +1,13 @@
-#include "iotmpu6050.h"
+#include "iotmpu6886.h"
 
-iotMPU6050::iotMPU6050(uint8_t i2c_addr) {
+iotMPU6886::iotMPU6886(uint8_t i2c_addr) {
   // int n;
   char buffer[50];
+  // auto cfg = M5.config();
+  // cfg = M5.config();
+  M5.begin(cfg);
 
-  mpu = new Adafruit_MPU6050();
+  // mpu = new Adafruit_MPU6886();
 
   mpu_i2c_addr = (unsigned int)i2c_addr;
   char hex_str[10];                      // 存储十六进制字符串的数组
@@ -13,79 +16,80 @@ iotMPU6050::iotMPU6050(uint8_t i2c_addr) {
   sscanf(hex_str, "%X", &hex_value);  // 将十六进制字符串转换为整数
   mpu_id = (String)hex_str;
 
-  esp_chip_info_t chip_info;
-  esp_chip_info(&chip_info);
+  // esp_chip_info_t chip_info;
+  // esp_chip_info(&chip_info);
 
-  // 檢查 CHip type
-  printf("This is an ESP32 chip with %d CPU cores, WiFi%s%s, ", chip_info.cores,
-         (chip_info.features & CHIP_FEATURE_BT) ? "/BT" : "",
-         (chip_info.features & CHIP_FEATURE_BLE) ? "/BLE" : "");
-  switch (chip_info.model) {
-    case CHIP_ESP32:
-      initialChipEsp32(i2c_addr);
-      break;
-    case CHIP_ESP32S2:
-      printf("Chip Model: ESP32-S2\n");
-      break;
-    case CHIP_ESP32S3:
-      initialChipEsp32SxCx();
-      break;
-    case CHIP_ESP32C6:
-      initialChipEsp32SxCx();
-      break;
-    default:
-      printf("Unknown chip model\n");
-      break;
-  }
+  // // 檢查 CHip type
+  // printf("This is an ESP32 chip with %d CPU cores, WiFi%s%s, ",
+  // chip_info.cores,
+  //        (chip_info.features & CHIP_FEATURE_BT) ? "/BT" : "",
+  //        (chip_info.features & CHIP_FEATURE_BLE) ? "/BLE" : "");
+  // switch (chip_info.model) {
+  //   case CHIP_ESP32:
+  //     initialChipEsp32(i2c_addr);
+  //     break;
+  //   case CHIP_ESP32S2:
+  //     printf("Chip Model: ESP32-S2\n");
+  //     break;
+  //   case CHIP_ESP32S3:
+  //     initialChipEsp32SxCx();
+  //     break;
+  //   case CHIP_ESP32C6:
+  //     initialChipEsp32SxCx();
+  //     break;
+  //   default:
+  //     printf("Unknown chip model\n");
+  //     break;
+  // }
 
-  printf("Revision number: %d\n", chip_info.revision);
+  // printf("Revision number: %d\n", chip_info.revision);
 
-  // 設置量程範圍為±8g和±1000dps
-  mpu->setAccelerometerRange(mpu_accel_range);
-  mpu->setGyroRange(mpu_gyro_range);
-  mpu->setFilterBandwidth(mpu_bandwidth);
-  mpu->setSampleRateDivisor(7);  // 设置采样率为1kHz（取样分频器为7）
-  // mpu->setFilterBandwidth(MPU6050_BAND_44_HZ);
-  // mpu->setHighPassFilter(MPU6050_HIGHPASS_0_63_HZ);
-  mpu->setHighPassFilter(mpu_highpass);
+  // // 設置量程範圍為±8g和±1000dps
+  // mpu->setAccelerometerRange(mpu_accel_range);
+  // mpu->setGyroRange(mpu_gyro_range);
+  // mpu->setFilterBandwidth(mpu_bandwidth);
+  // mpu->setSampleRateDivisor(7);  // 设置采样率为1kHz（取样分频器为7）
+  // // mpu->setFilterBandwidth(MPU6886_BAND_44_HZ);
+  // // mpu->setHighPassFilter(MPU6886_HIGHPASS_0_63_HZ);
+  // mpu->setHighPassFilter(mpu_highpass);
 
-  resetMPU6050Data();
-  getMPU6050OffsetData();
+  resetMPU6886Data();
+  getMPU6886OffsetData();
 }
 
-void iotMPU6050::initialChipEsp32(uint8_t i2c_addr) {
-  char buffer[50];
-  int n;
-  printf("Chip Model: ESP32\n");
-  if (!mpu->begin(i2c_addr)) {
-    n = sprintf(buffer, "MPU6050 not found i2c_addr\"%x\"",
-                (unsigned int)i2c_addr);
-    Serial.println(buffer);
+// void iotMPU6886::initialChipEsp32(uint8_t i2c_addr) {
+//   char buffer[50];
+//   int n;
+//   printf("Chip Model: ESP32\n");
+//   if (!mpu->begin(i2c_addr)) {
+//     n = sprintf(buffer, "MPU6886 not found i2c_addr\"%x\"",
+//                 (unsigned int)i2c_addr);
+//     Serial.println(buffer);
 
-    while (1) {
-      delay(10);
-    }
-  } else {
-    n = sprintf(buffer, "MPU6050  found i2c_addr 0x\"%x\"",
-                (unsigned int)i2c_addr);
-    Serial.println(buffer);
-  }
-}
-void iotMPU6050::initialChipEsp32SxCx() {
-  printf("Chip Model: ESP32-S3 or ESP32-C6\n");
-  // 初始化 I2C 接口，使用指定的引脚
-  Wire.begin(SDA_PIN, SCL_PIN);
-  // 初始化 MPU6050
-  if (!mpu->begin()) {
-    Serial.println("MPU6050 初始化失败！");
-    while (1) {
-      delay(10);  // 停止运行
-    }
-  }
-}
+//     while (1) {
+//       delay(10);
+//     }
+//   } else {
+//     n = sprintf(buffer, "MPU6886  found i2c_addr 0x\"%x\"",
+//                 (unsigned int)i2c_addr);
+//     Serial.println(buffer);
+//   }
+// }
+// void iotMPU6886::initialChipEsp32SxCx() {
+//   printf("Chip Model: ESP32-S3 or ESP32-C6\n");
+//   // 初始化 I2C 接口，使用指定的引脚
+//   Wire.begin(SDA_PIN, SCL_PIN);
+//   // 初始化 MPU6886
+//   if (!mpu->begin()) {
+//     Serial.println("MPU6886 初始化失败！");
+//     while (1) {
+//       delay(10);  // 停止运行
+//     }
+//   }
+// }
 
-void iotMPU6050::getMPU6050OffsetData() {
-  sensors_event_t accelEvent, gyroEvent, tempEvent;
+void iotMPU6886::getMPU6886OffsetData() {
+  // sensors_event_t accelEvent, gyroEvent, tempEvent;
   // int i;
   // int count;
   long endTime = 0;
@@ -100,19 +104,29 @@ void iotMPU6050::getMPU6050OffsetData() {
   if (!(mpuSettingJson->checkSettingJsonExist(mpu_id))) {
     Serial.println("..test2..");
     for (int i = 0; i < numSamples; i++) {
-      mpu->getEvent(&accelEvent, &gyroEvent, &tempEvent);
-      // Serial.println("..test3..");
-      accelOffsetX += accelEvent.acceleration.x;
-      accelOffsetY += accelEvent.acceleration.y;
-      accelOffsetZ += accelEvent.acceleration.z;
-      // gyroOffsetX += gyroEvent.gyro.x;
-      // gyroOffsetY += gyroEvent.gyro.y;
-      // gyroOffsetZ += gyroEvent.gyro.z;
+      // mpu->getEvent(&accelEvent, &gyroEvent, &tempEvent);
+      bool imu_update = M5.Imu.update();
+      if (imu_update) {
+        // Serial.println("..test3..");
+        imuData = M5.Imu.getImuData();
+        accelOffsetX += imuData.accel.x;
+        accelOffsetY += imuData.accel.y;
+        accelOffsetZ += imuData.accel.z;
+      }
 
       long endTime = micros();
       if (endTime - ledtime > 0.02 * sencond_1) {
         ledDisplay(led_on);
         ledtime = endTime;
+
+        M5Display("Cali-ing",0.8);
+        // AtomS3.Display.clear();
+        // AtomS3.Display.setTextColor(GREEN);
+        // AtomS3.Display.setTextDatum(middle_center);
+        // AtomS3.Display.setFont(&fonts::Orbitron_Light_24);
+        // AtomS3.Display.setTextSize(1);
+        // AtomS3.Display.drawString("Cali-ing", AtomS3.Display.width() / 2,
+        //                           AtomS3.Display.height() / 2);
       }
 
       // ledDisplay(led_on);
@@ -136,6 +150,18 @@ void iotMPU6050::getMPU6050OffsetData() {
                                                accelOffsetZ);
     // Serial.println("..test4..");
   }
+
+  M5Display("Amhs XYZ",0.8);
+
+  // AtomS3.Display.clear();
+  // AtomS3.Display.setTextColor(GREEN);
+  // AtomS3.Display.setTextDatum(middle_center);
+  // AtomS3.Display.setFont(&fonts::Orbitron_Light_24);
+  // AtomS3.Display.setTextSize(0.8);
+  // AtomS3.Display.drawString("Amhs XYZ", AtomS3.Display.width() / 2,
+  //                           AtomS3.Display.height() / 2);
+
+
   Serial.println("..mpuSettingJson->ReadAccOffset..");
   // 讀取加速度補償直
   mpuSettingJson->ReadAccOffset(&accelOffsetX, &accelOffsetY, &accelOffsetZ);
@@ -171,45 +197,47 @@ void iotMPU6050::getMPU6050OffsetData() {
   Serial.println("======== delete (mpuSettingJson);===============");
 }
 
-void iotMPU6050::getMPU6050Event() {
+void iotMPU6886::getMPU6886Event() {
   // char buffer[50];
   // int n;
-  sensors_event_t a, g, temp;
-  mpu->getEvent(&a, &g, &temp);
-  // mpu->reset();
-
-  getMPU6050Acc(a, temp, g);
+  // Serial.print("M5.Imu.update(); ");
+  bool imu_update = M5.Imu.update();
+  if (imu_update) {
+    imuData = M5.Imu.getImuData();
+    getMPU6886Acc(imuData);
+  }
+  // Serial.print("M5.Imu.update(); Complete");
 }
-void iotMPU6050::getMPU6050Acc(sensors_event_t a, sensors_event_t temp,
-                               sensors_event_t g) {
+void iotMPU6886::getMPU6886Acc(m5::imu_data_t a) {
   char buffer[50];
   int n;
-  //   sensors_event_t a, g, temp;
-  //   mpu->getEvent(&a, &g, &temp);
 
-  x_acc = a.acceleration.x - accelOffsetX;
+  x_acc = a.accel.x - accelOffsetX;
   // sprintf(buffer, "[x_acc=%2.1f working..", x_acc);
   // Serial.println(buffer);
-  y_acc = a.acceleration.y - accelOffsetY;
+  y_acc = a.accel.y - accelOffsetY;
   // sprintf(buffer, "[y_acc=%2.1f working..", y_acc);
   // Serial.println(buffer);
-  z_acc = a.acceleration.z - accelOffsetZ;
+  z_acc = a.accel.z - accelOffsetZ;
   // sprintf(buffer, "[z_acc=%2.1f working..", z_acc);
   // Serial.println(buffer);
-  temperature = temp.temperature;
+  temperature = 0;  // temp.temperature;
+
+  //display acc on screen
+  M5DisplayAcc(x_acc,y_acc,z_acc);
 
   // 忽略或过滤异常数据
-  if (getMPU6050Noise(x_acc, y_acc, z_acc) == false) {
+  if (getMPU6886Noise(x_acc, y_acc, z_acc) == false) {
     return;
   }
   // 累計最大值與最小值
-  getMPU6050AccMaxMin(x_acc, y_acc, z_acc);
+  getMPU6886AccMaxMin(x_acc, y_acc, z_acc);
   // 補償後的值計算角度
-  getMPU6050Angle(a, g);
+  getMPU6886Angle(a);
 }
 
 // 忽略或过滤异常数据
-bool iotMPU6050::getMPU6050Noise(float x, float y, float z) {
+bool iotMPU6886::getMPU6886Noise(float x, float y, float z) {
   // 忽略或过滤异常数据
   if (abs(x_acc) > MAX_ACCELERATION || abs(y_acc) > MAX_ACCELERATION ||
       abs(z_acc) > MAX_ACCELERATION) {
@@ -231,31 +259,29 @@ bool iotMPU6050::getMPU6050Noise(float x, float y, float z) {
   // }
   return true;
 }
-void iotMPU6050::getMPU6050Angle(sensors_event_t a, sensors_event_t g) {
+void iotMPU6886::getMPU6886Angle(m5::imu_data_t a) {
   // char buffer[500];
   // int n;
   // sprintf(buffer, "[Angle]i2c_addr 0x%x working..", mpu_i2c_addr);
   // Serial.println(buffer);
   // 計算傾斜角度
   // pitch
-  y_z_ang = (atan2(a.acceleration.y,
-                   sqrt(pow(a.acceleration.x, 2) + pow(a.acceleration.z, 2))) *
+  y_z_ang = (atan2(a.accel.y, sqrt(pow(a.accel.x, 2) + pow(a.accel.z, 2))) *
              180 / PI) -
             angleOffsetY_Z;
   // sprintf(buffer, "[y_z_ang=%2.1f working..", y_z_ang);
   // Serial.println(buffer);
   // roll
-  x_z_ang = (atan2(-a.acceleration.x,
-                   sqrt(pow(a.acceleration.y, 2) + pow(a.acceleration.z, 2))) *
+  x_z_ang = (atan2(-a.accel.x, sqrt(pow(a.accel.y, 2) + pow(a.accel.z, 2))) *
              180 / PI) -
             angleOffsetX_Z;
 
-  getMPU6050AngleMaxMin(x_z_ang, y_z_ang);
+  getMPU6886AngleMaxMin(x_z_ang, y_z_ang);
 }
-void iotMPU6050::getMPU6050AccMaxMin(float x, float y, float z) {
+void iotMPU6886::getMPU6886AccMaxMin(float x, float y, float z) {
   // char buffer[200];
   // int n;
-  // sprintf(buffer, "[getMPU6050AccMaxMin ini]initial_acc_flg=%d ",
+  // sprintf(buffer, "[getMPU6886AccMaxMin ini]initial_acc_flg=%d ",
   //         initial_acc_flg);
   // Serial.println(buffer);
   if (initial_acc_flg == true) {
@@ -285,7 +311,7 @@ void iotMPU6050::getMPU6050AccMaxMin(float x, float y, float z) {
   // get min
   if (z < min_z_acc) min_z_acc = z;
 }
-void iotMPU6050::getMPU6050AngleMaxMin(float x_z, float y_z) {
+void iotMPU6886::getMPU6886AngleMaxMin(float x_z, float y_z) {
   // char buffer[500];
   // int n;
   // Serial.println("test1....");
@@ -313,16 +339,16 @@ void iotMPU6050::getMPU6050AngleMaxMin(float x_z, float y_z) {
   if (y_z < min_y_z_ang) min_y_z_ang = y_z;
 
   // sprintf(buffer,
-  //         "[getMPU6050AngleMaxMin]MPU6050 not found i2c_addr\"%x\"   "
+  //         "[getMPU6886AngleMaxMin]MPU6886 not found i2c_addr\"%x\"   "
   //         "max_x_z_ang=%2.1f min_x_z_ang=%2.1f "
   //         "max_y_z_ang=%2.1f  min_y_z_ang=%2.1f Working..",
-  //         (unsigned int)mpu_i2c_addr, max_x_z_ang, min_x_z_ang, max_y_z_ang,
-  //         min_y_z_ang);
+  //         (unsigned int)mpu_i2c_addr, max_x_z_ang, min_x_z_ang,
+  //         max_y_z_ang, min_y_z_ang);
   // Serial.println(buffer);
 }
-void iotMPU6050::getMPU6050Temperature() {}
+void iotMPU6886::getMPU6886Temperature() {}
 
-void iotMPU6050::resetMPU6050Data() {
+void iotMPU6886::resetMPU6886Data() {
   // acc
   // x_acc = 0.0;
   // y_acc = 0.0;
@@ -347,7 +373,7 @@ void iotMPU6050::resetMPU6050Data() {
 }
 //--------------------------------------------------------------------------------------
 
-String iotMPU6050::getMPU6050Json() {
+String iotMPU6886::getMPU6886Json() {
   // 創建一個足夠大的 StaticJsonDocument
   StaticJsonDocument<1024> doc;
   UUIDGenerator uuidGen;
@@ -362,7 +388,8 @@ String iotMPU6050::getMPU6050Json() {
 
   // Add the mac_address and correlation_id
   doc["mac_address"] = WiFi.macAddress();
-  doc["correlation_id"] =  uuidGen.generateRandomUUID();  // 替換為實際的 correlation ID
+  doc["correlation_id"] =
+      uuidGen.generateRandomUUID();  // 替換為實際的 correlation ID
   // 創建嵌套在 "data" 下的 JSON 對象
   JsonObject data = doc["data"].to<JsonObject>();
   // JsonObject data = doc.createNestedObject("data");

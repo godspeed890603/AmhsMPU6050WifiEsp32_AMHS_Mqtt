@@ -58,6 +58,7 @@ void MQTTClient::connect() {
       // String mqtt_subscribe_topic="response/iot/"+ WiFi.macAddress() +
       // "/service_vibration";
       client->subscribe(mqtt_subscribe_topic.c_str(), qos_subscribe);
+      log_message("client->subscribe(mqtt_subscribe_topic.c_str(), qos_subscribe)");
     } else {
       log_message("Failed to connect to MQTT broker, retrying...");
       Serial.println(mqtt_port);

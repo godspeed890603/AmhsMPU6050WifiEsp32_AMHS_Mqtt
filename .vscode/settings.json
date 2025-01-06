@@ -9,6 +9,9 @@
         "vector": "cpp",
         "string_view": "cpp",
         "initializer_list": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "cmath": "cpp",
+        "*.tcc": "cpp",
+        "system_error": "cpp"
     }
 }

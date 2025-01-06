@@ -15,14 +15,14 @@ bool iotSettingJson::checkSettingJsonExist(String mpu_id) {
   }
 
   // 檢查指定的檔案是否存在
-  settingFullFilename = (String)fullJsonFileName; // 儲存完整檔案路徑
+  settingFullFilename = (String)fullJsonFileName;  // 儲存完整檔案路徑
   if (SPIFFS.exists(fullJsonFileName)) {
     Serial.println("File exists");
     return true;  // 檔案存在，返回 true
   } else {
     Serial.println("File does not exist");
     Serial.println(settingFullFilename);  // 顯示不存在的檔案名稱
-    return false;  // 檔案不存在，返回 false
+    return false;                         // 檔案不存在，返回 false
   }
 }
 
@@ -33,7 +33,7 @@ void iotSettingJson::writeFileToSPIFFS(String data) {
 
   File file = SPIFFS.open(settingFullFilename.c_str(), FILE_WRITE);
   Serial.println("open filename");
-  
+
   // 檢查是否成功打開檔案
   if (!file) {
     Serial.println("Failed to open file for writing");
@@ -134,8 +134,29 @@ bool iotSettingJson::ReadAccOffset(float* accelOffsetX, float* accelOffsetY,
   return true;
 }
 
+void iotSettingJson::DeleteOffsetFile() {
+  // 初始化 SPIFFS
+  if (!SPIFFS.begin(true)) {
+    Serial.println("SPIFFS initialization failed!");
+    return;
+  }
+  Serial.println("SPIFFS initialized.");
 
+  // 要刪除的檔案路徑
+  const char* filePath = "/0x68.json";
 
+  // 檢查檔案是否存在
+  if (SPIFFS.exists(filePath)) {
+    // 刪除檔案
+    if (SPIFFS.remove(filePath)) {
+      Serial.printf("File %s deleted successfully!\n", filePath);
+    } else {
+      Serial.printf("Failed to delete file %s\n", filePath);
+    }
+  } else {
+    Serial.printf("File %s does not exist.\n", filePath);
+  }
+}
 
 // #include "./settingJson.h"
 
