@@ -9,7 +9,7 @@ Stocker Crane走行、伺服馬達震動資料收集屬於監控行為!只要區
 ## 架構說明
 1.採用RTOS的方式<br><br>
 2.xTaskCreatePinnedToCore mpu6050_task、wifiTask_0x68，將讀取MPU6050與連結IOTView(mqtt)方開，藉以更有資料收集與傳輸<br><br>
-3.兩個TASK QueueHandle_t與SemaphoreHandle_t來協調作業<br><br>
+3.瞭個TASK QueueHandle_t與SemaphoreHandle_t來協調作業<br><br>
 4.mpu6050需要做水平補正<br><br>
 6.原本只用SQLLITE儲存補正值，後續改為JSON<br><br>
 7.Mqtt subject<br>
@@ -22,12 +22,6 @@ mqtt_request_topic =
       mqtt_request_topic_prefix + WiFi.macAddress() + serviceName;<br><br>
 8.ESP32透過同一UUID發送與接收來識別data pair<br>
 doc["correlation_id"] =  uuidGen.generateRandomUUID();  // 替換為實際的 correlation ID<br><br>
-## 成果
-1.device<br><br>
-https://github.com/godspeed890603/AmhsMPU6050WifiEsp32_AMHS_Mqtt/tree/master/Device<br><br>
-2.result<br><br>
-https://github.com/godspeed890603/AmhsMPU6050WifiEsp32_AMHS_Mqtt/tree/master/Result<br><br>
-
 
 
 

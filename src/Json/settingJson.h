@@ -41,9 +41,6 @@ class iotSettingJson {
 
   // 寫入 JSON 資料到 SPIFFS 檔案
   void writeFileToSPIFFS(String data);
-
-  // 刪除 SPIFFS的 的 JSON 檔案
-  void DeleteOffsetFile();
 };
 
 #endif
